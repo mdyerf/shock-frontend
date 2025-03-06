@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { GridFooter, useGridApiContext } from "@mui/x-data-grid";
-import { Chip, Stack } from "@mui/material";
+import { Chip, OutlinedInput, Stack } from "@mui/material";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import InputModal from "./Modal";
 
@@ -14,8 +14,8 @@ function Footer(onGroup: Function) {
     const getRows = () =>
       Array.from(apiRef.current.getSelectedRows().values()).map((r) => r.name);
 
-    const handleCreateGroup = (name: string) => {
-      onGroup(name, getRows());
+    const handleCreateGroup = (formData: FormData) => {
+      onGroup(formData.get("name"), getRows());
       apiRef.current.setRowSelectionModel([]);
     };
 
@@ -27,9 +27,10 @@ function Footer(onGroup: Function) {
           open={openModal}
           onClose={() => setOpenModal(false)}
           onSubmit={handleCreateGroup}
-          label="Group Name"
           text="Enter Group Name"
-        />
+        >
+          <OutlinedInput name="name" placeholder="Group Name" />
+        </InputModal>
         <Stack
           direction="row-reverse"
           justifyContent="space-between"

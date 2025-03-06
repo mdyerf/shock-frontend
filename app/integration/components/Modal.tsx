@@ -1,15 +1,8 @@
 "use client";
 
-import { CheckCircle, Error, InputOutlined } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Modal,
-  OutlinedInput,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { useEffect, useState } from "react";
+import { FormEventHandler, ReactNode } from "react";
+import { CheckCircle, Error } from "@mui/icons-material";
+import { Box, Button, Modal, Stack, Typography } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -27,52 +20,44 @@ interface InputModalProps {
   open: boolean;
   onClose: () => void;
   text: string;
-  label: string;
-  onSubmit: (value: string) => void;
+  onSubmit: (formData: FormData) => void;
+  children: ReactNode;
 }
 
-function InputModal({ open, text, label, onClose, onSubmit }: InputModalProps) {
-  const [value, setValue] = useState("");
-
-  useEffect(() => {
-    setValue("");
-  }, [open]);
-
-  const handleClick = () => {
-    if (value?.length) {
-      onSubmit(value);
-      onClose();
-    }
-  };
-
+function InputModal({
+  open,
+  text,
+  onClose,
+  onSubmit,
+  children,
+}: InputModalProps) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style} display="flex" flexDirection="column" gap={1}>
         <Typography variant="h6">{text}</Typography>
-        <OutlinedInput
-          placeholder={label}
-          label={label}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <Stack direction="row" justifyContent="space-between">
-          <Button
-            startIcon={<CheckCircle />}
-            variant="contained"
-            color="success"
-            onClick={handleClick}
-          >
-            Submit
-          </Button>
-          <Button
-            startIcon={<Error />}
-            variant="contained"
-            color="error"
-            onClick={onClose}
-          >
-            Cancel
-          </Button>
-        </Stack>
+        <form action={onSubmit}>
+          <Box display="flex" flexDirection="column" gap={1} my={1}>
+            {children}
+          </Box>
+          <Stack direction="row" justifyContent="space-between">
+            <Button
+              startIcon={<CheckCircle />}
+              variant="contained"
+              type="submit"
+              color="success"
+            >
+              Submit
+            </Button>
+            <Button
+              startIcon={<Error />}
+              variant="contained"
+              color="error"
+              onClick={onClose}
+            >
+              Cancel
+            </Button>
+          </Stack>
+        </form>
       </Box>
     </Modal>
   );

@@ -107,3 +107,7 @@ export function getIntegration(id: string) {
     children: [],
   } satisfies Integration);
 }
+
+export function createIntegration(name: string, parentId: number) {
+  return getIntegration('');
+}
