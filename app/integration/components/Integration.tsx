@@ -15,28 +15,50 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MemoryIcon from "@mui/icons-material/Memory";
 import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import { Integration as DataType } from "../types";
+import { Country, Integration as DataType, GroupHandler } from "../types";
 import { useMemo, useState } from "react";
 import CountriesGrid from "./CountriesGrid";
 
 type IntegrationProps = DataType;
+
+const allIndustriesGroupName = "all industries";
 
 function Integration({
   id,
   name,
   parent,
   enableUndo,
-  industries,
+  status,
+  industriesGrouped,
   countries,
   children,
 }: IntegrationProps) {
-  const [localGroups, setGroups] = useState(["Asia", "Persian", "Arab"]);
+  const [countryGroups, setGroups] = useState<Country[]>([]);
+  const [groupIndustries, setGroupIndustries] = useState(false);
 
   const groups = useMemo(
-    // TODO: complete logic
-    () => ["all industries", "5 + 1", "Middle East"],
-    [industries, countries]
+    () =>
+      countries
+        .filter((c) => c.countries?.length)
+        .map((c) => c.name)
+        .concat(industriesGrouped ? [allIndustriesGroupName] : []),
+    [industriesGrouped, countries]
   );
+
+  const processDisabled = useMemo(
+    () => !groupIndustries && !countryGroups.length,
+    [groupIndustries, countryGroups.length]
+  );
+
+  const handleGroupIndustries = () => setGroupIndustries(true);
+
+  const handleUnGroupIndustries = () => setGroupIndustries(false);
+
+  const handleCountryGroup: GroupHandler = (name, countries) =>
+    setGroups((gs) => [...gs, { name, countries }]);
+
+  const handleRemoveGroup = (name: string) => () =>
+    setGroups((gs) => gs.filter((g) => g.name !== name));
 
   return (
     <Box>
@@ -64,7 +86,8 @@ function Integration({
         <Stack direction="row" spacing={1}>
           <Button
             variant="contained"
-            color="primary"
+            color={processDisabled ? "inherit" : "primary"}
+            disabled={processDisabled}
             startIcon={<MemoryIcon />}
           >
             Start Processing
@@ -81,8 +104,13 @@ function Integration({
         </Stack>
       </Stack>
 
-      <Stack direction="row" justifyContent="space-between" flexWrap="wrap-reverse" gap={1}>
-        <Stack maxWidth={200}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        flexWrap="wrap-reverse"
+        gap={1}
+      >
+        <Stack width={200}>
           <Typography variant="body1">Groups</Typography>
           <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1} m={1}>
             {groups.map((g) => (
@@ -90,22 +118,36 @@ function Integration({
             ))}
           </Box>
           <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1} m={1}>
-            {localGroups.map((g) => (
-              <Chip key={g} label={g} color="secondary" onDelete={() => {}} />
+            {countryGroups.map(({ name }) => (
+              <Chip
+                key={name}
+                label={name}
+                color="secondary"
+                onDelete={handleRemoveGroup(name)}
+              />
             ))}
+            {groupIndustries && (
+              <Chip
+                label={allIndustriesGroupName}
+                color="secondary"
+                onDelete={handleUnGroupIndustries}
+              />
+            )}
           </Box>
-          <Box m={1}>
-            <Chip
-              label="Group All Industries"
-              icon={<ControlPointIcon />}
-              color="primary"
-              size="medium"
-              onClick={() => {}}
-            />
-          </Box>
+          {!industriesGrouped && !groupIndustries && (
+            <Box m={1}>
+              <Chip
+                label="Group All Industries"
+                icon={<ControlPointIcon />}
+                color="primary"
+                size="medium"
+                onClick={handleGroupIndustries}
+              />
+            </Box>
+          )}
         </Stack>
         <Box flex={1}>
-          <CountriesGrid rows={countries} />
+          <CountriesGrid rows={countries} onGroup={handleCountryGroup} />
         </Box>
       </Stack>
     </Box>

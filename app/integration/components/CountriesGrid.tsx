@@ -2,7 +2,7 @@
 
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "./DataGrid";
-import { Integration } from "../types";
+import { GroupHandler, Integration } from "../types";
 import { Typography } from "@mui/material";
 
 const columns: GridColDef[] = [
@@ -27,14 +27,16 @@ const columns: GridColDef[] = [
 
 interface CountriesGridProps {
   rows: Integration["countries"];
+  onGroup: GroupHandler;
 }
 
-function CountriesGrid({ rows }: CountriesGridProps) {
+function CountriesGrid({ rows, onGroup }: CountriesGridProps) {
   return (
     <DataGrid
       rows={rows.map((row, index) => ({ ...row, id: index }))}
       columns={columns}
       checkboxSelection
+      onGroup={onGroup}
     />
   );
 }
