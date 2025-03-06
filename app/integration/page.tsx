@@ -1,10 +1,10 @@
-"use client";
-
 import Link from "next/link";
 import { Box, Button } from "@mui/material";
-import CustomizedDataGrid from "@/app/components/CustomDataGrid";
+import IntegrationGrid from "./components/IntegrationGrid";
+import { getIntegrations } from "../mocks/integrations";
 
-function Page() {
+async function Page() {
+  const rows = await getIntegrations();
   return (
     <>
       <Box my={1}>
@@ -14,7 +14,7 @@ function Page() {
           </Button>
         </Link>
       </Box>
-      <CustomizedDataGrid />
+      <IntegrationGrid rows={rows} />
     </>
   );
 }
