@@ -18,9 +18,9 @@ const style = {
 
 interface InputModalProps {
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   text: string;
-  onSubmit: (formData: FormData) => void;
+  onSubmit?: (formData: FormData) => void;
   children: ReactNode;
 }
 
@@ -40,22 +40,26 @@ function InputModal({
             {children}
           </Box>
           <Stack direction="row" justifyContent="space-between">
-            <Button
-              startIcon={<CheckCircle />}
-              variant="contained"
-              type="submit"
-              color="success"
-            >
-              Submit
-            </Button>
-            <Button
-              startIcon={<Error />}
-              variant="contained"
-              color="error"
-              onClick={onClose}
-            >
-              Cancel
-            </Button>
+            {onSubmit && (
+              <Button
+                startIcon={<CheckCircle />}
+                variant="contained"
+                type="submit"
+                color="success"
+              >
+                Submit
+              </Button>
+            )}
+            {onClose && (
+              <Button
+                startIcon={<Error />}
+                variant="contained"
+                color="error"
+                onClick={onClose}
+              >
+                Cancel
+              </Button>
+            )}
           </Stack>
         </form>
       </Box>
