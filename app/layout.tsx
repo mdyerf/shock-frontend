@@ -2,8 +2,9 @@ import * as React from "react";
 import { AppProvider } from "@toolpad/core/nextjs";
 import PivotTableChartIcon from "@mui/icons-material/PivotTableChart";
 import type { Navigation } from "@toolpad/core/AppProvider";
-import theme from "../theme";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { DashboardLayout, PageContainer } from "@toolpad/core";
+import theme from "../theme";
 import AppHeader from "./components/AppHeader";
 
 const NAVIGATION: Navigation = [
@@ -21,15 +22,19 @@ export default async function RootLayout({
   return (
     <html lang="en" data-toolpad-color-scheme="dark">
       <body>
-        <AppProvider theme={theme} navigation={NAVIGATION}>
-          <DashboardLayout
-            slots={{
-              appTitle: AppHeader,
-            }}
-          >
-            <PageContainer breadcrumbs={[]}>{children}</PageContainer>
-          </DashboardLayout>
-        </AppProvider>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <AppProvider theme={theme} navigation={NAVIGATION}>
+            <DashboardLayout
+              slots={{
+                appTitle: AppHeader,
+              }}
+            >
+              <PageContainer title="" breadcrumbs={[]}>
+                {children}
+              </PageContainer>
+            </DashboardLayout>
+          </AppProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
