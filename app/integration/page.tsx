@@ -1,9 +1,7 @@
-import Link from "next/link";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import IntegrationGrid from "./components/IntegrationGrid";
 import { getIntegrations } from "../mocks/integrations";
-import { Add } from "@mui/icons-material";
-import AddIntegration from "./AddIntegration";
+import AddIntegration from "./components/AddIntegration";
 
 async function Page() {
   const rows = await getIntegrations();

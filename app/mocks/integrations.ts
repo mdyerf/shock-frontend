@@ -1,4 +1,4 @@
-import { Integration, IntegrationRow } from "../integration/types";
+import { Integration, IntegrationRow } from "../types";
 
 export function getIntegrations() {
   return Promise.resolve([

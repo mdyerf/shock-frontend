@@ -6,7 +6,7 @@ import { Chip, OutlinedInput, Stack } from "@mui/material";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import InputModal from "./Modal";
 
-function Footer(onGroup: Function) {
+function Footer(onGroup?: Function) {
   return () => {
     const [openModal, setOpenModal] = useState(false);
     const apiRef = useGridApiContext();
@@ -15,7 +15,7 @@ function Footer(onGroup: Function) {
       Array.from(apiRef.current.getSelectedRows().values()).map((r) => r.name);
 
     const handleCreateGroup = (formData: FormData) => {
-      onGroup(formData.get("name"), getRows());
+      onGroup?.(formData.get("name"), getRows());
       apiRef.current.setRowSelectionModel([]);
     };
 

@@ -16,7 +16,7 @@ interface DataGridProps {
   rows: GridValidRowModel[];
   columns: GridColDef[];
   checkboxSelection?: boolean;
-  onGroup: GroupHandler;
+  onGroup?: GroupHandler;
 }
 
 function SearchBar() {

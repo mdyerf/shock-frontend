@@ -3,17 +3,17 @@
 import Link from "next/link";
 import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/app/components/DataGrid";
-import { IntegrationRow } from "../../types";
+import { DiffusionRow } from "../../types";
 import StatusChip from "@/app/components/StatusChip";
 
 const columns: GridColDef[] = [
   {
     field: "name",
-    headerName: "Integration Name",
+    headerName: "Diffusion Name",
     flex: 1.5,
     minWidth: 200,
     renderCell: (params) => (
-      <Link href={`/integration/${params.id}`}>{params.value}</Link>
+      <Link href={`/diffusion/${params.id}`}>{params.value}</Link>
     ),
   },
   {
@@ -24,23 +24,18 @@ const columns: GridColDef[] = [
     renderCell: (params) => <StatusChip status={params.value} />,
   },
   {
-    field: "parentName",
-    headerName: "Parent",
-    flex: 1,
-  },
-  {
-    field: "childrenCount",
-    headerName: "Children Count",
+    field: "integrationName",
+    headerName: "Integration",
     flex: 1,
   },
 ];
 
-interface IntegrationGridProps {
-  rows: IntegrationRow[];
+interface DiffusionGridProps {
+  rows: DiffusionRow[];
 }
 
-function IntegrationGrid({ rows }: IntegrationGridProps) {
+function DiffusionGrid({ rows }: DiffusionGridProps) {
   return <DataGrid rows={rows} columns={columns} />;
 }
 
-export default IntegrationGrid;
+export default DiffusionGrid;

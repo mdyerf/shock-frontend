@@ -1,6 +1,7 @@
 import * as React from "react";
 import { AppProvider } from "@toolpad/core/nextjs";
 import PivotTableChartIcon from "@mui/icons-material/PivotTableChart";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import type { Navigation } from "@toolpad/core/AppProvider";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { DashboardLayout, PageContainer } from "@toolpad/core";
@@ -13,6 +14,12 @@ const NAVIGATION: Navigation = [
     segment: "integration",
     pattern: "integration/:id?",
     icon: <PivotTableChartIcon />,
+  },
+  {
+    title: "Diffusion",
+    segment: "diffusion",
+    pattern: "diffusion/:id?",
+    icon: <AccountTreeIcon />,
   },
 ];
 

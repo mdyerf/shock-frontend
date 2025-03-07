@@ -16,10 +16,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MemoryIcon from "@mui/icons-material/Memory";
 import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import { Country, Integration as DataType, GroupHandler } from "../types";
+import { Country, Integration as DataType, GroupHandler } from "../../types";
 import { useMemo, useState } from "react";
 import CountriesGrid from "./CountriesGrid";
-import InputModal from "./Modal";
+import InputModal from "../../components/Modal";
 
 type IntegrationProps = DataType;
 

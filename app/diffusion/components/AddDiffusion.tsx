@@ -1,18 +1,18 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Add } from "@mui/icons-material";
 import { Button, MenuItem, OutlinedInput, Select } from "@mui/material";
-import InputModal from "./components/Modal";
-import { useState } from "react";
-import { createIntegration } from "../mocks/integrations";
-import { useRouter } from "next/navigation";
-import { IntegrationRow } from "./types";
+import { IntegrationRow } from "@/app/types";
+import { createIntegration } from "../../mocks/integrations";
+import InputModal from "@/app/components/Modal";
 
-interface AddIntegrationProps {
+interface AddDiffusionProps {
   integrations: IntegrationRow[];
 }
 
-function AddIntegration({ integrations }: AddIntegrationProps) {
+function AddDiffusion({ integrations }: AddDiffusionProps) {
   const navigate = useRouter();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -21,14 +21,14 @@ function AddIntegration({ integrations }: AddIntegrationProps) {
 
   const handleAdd = (formData: FormData) => {
     const name = formData.get("name")?.toString();
-    const parentId = parseInt(formData.get("parentId")?.toString() ?? "");
+    const integrationId = parseInt(formData.get("integrationId")?.toString() ?? "");
 
-    if (!name || !parentId) {
+    if (!name || !integrationId) {
       return;
     }
 
-    createIntegration(name, parentId).then(({ id }) =>
-      navigate.push(`/integration/${id}`)
+    createIntegration(name, integrationId).then(({ id }) =>
+      navigate.push(`/diffusion/${id}`)
     );
   };
 
@@ -37,12 +37,12 @@ function AddIntegration({ integrations }: AddIntegrationProps) {
       <InputModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        text="Enter Integration Name"
+        text="Enter Diffusion Name"
         onSubmit={handleAdd}
       >
-        <OutlinedInput name="name" placeholder="Integration Name" />
-        <Select name="parentId" defaultValue={0}>
-          <MenuItem value={0}>Select Parent</MenuItem>
+        <OutlinedInput name="name" placeholder="Diffusion Name" />
+        <Select name="integrationId" defaultValue={0}>
+          <MenuItem value={0}>Select Base Integration</MenuItem>
           {integrations.map(({ id, name }) => (
             <MenuItem key={id} value={id}>
               {name}
@@ -56,10 +56,10 @@ function AddIntegration({ integrations }: AddIntegrationProps) {
         startIcon={<Add />}
         onClick={handleOpenModal}
       >
-        Add Integration
+        Add Diffusion
       </Button>
     </>
   );
 }
 
-export default AddIntegration;
+export default AddDiffusion;

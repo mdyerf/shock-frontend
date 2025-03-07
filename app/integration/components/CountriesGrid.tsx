@@ -1,9 +1,9 @@
 "use client";
 
 import { GridColDef } from "@mui/x-data-grid";
-import DataGrid from "./DataGrid";
-import { GroupHandler, Integration } from "../types";
+import { GroupHandler, Integration } from "../../types";
 import { Typography } from "@mui/material";
+import DataGrid from "@/app/components/DataGrid";
 
 const columns: GridColDef[] = [
   {
