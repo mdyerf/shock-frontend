@@ -3,13 +3,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Add } from "@mui/icons-material";
-import { Button, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { Button, MenuItem, TextField, Select } from "@mui/material";
 import { IntegrationRow } from "@/app/types";
 import { createIntegration } from "../../mocks/integrations";
 import InputModal from "@/app/components/Modal";
+import { SubmitHandler, useForm } from "react-hook-form";
+import SelectInput from "@/app/components/SelectInput";
 
 interface AddDiffusionProps {
   integrations: IntegrationRow[];
+}
+
+interface IFormData {
+  name: string;
+  integrationId: number;
 }
 
 function AddDiffusion({ integrations }: AddDiffusionProps) {
@@ -17,16 +24,15 @@ function AddDiffusion({ integrations }: AddDiffusionProps) {
 
   const [modalOpen, setModalOpen] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormData>();
+
   const handleOpenModal = () => setModalOpen(true);
 
-  const handleAdd = (formData: FormData) => {
-    const name = formData.get("name")?.toString();
-    const integrationId = parseInt(formData.get("integrationId")?.toString() ?? "");
-
-    if (!name || !integrationId) {
-      return;
-    }
-
+  const handleAdd: SubmitHandler<IFormData> = ({ name, integrationId }) => {
     createIntegration(name, integrationId).then(({ id }) =>
       navigate.push(`/diffusion/${id}`)
     );
@@ -38,17 +44,22 @@ function AddDiffusion({ integrations }: AddDiffusionProps) {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         text="Enter Diffusion Name"
-        onSubmit={handleAdd}
+        onSubmit={handleSubmit(handleAdd)}
       >
-        <OutlinedInput name="name" placeholder="Diffusion Name" />
-        <Select name="integrationId" defaultValue={0}>
-          <MenuItem value={0}>Select Base Integration</MenuItem>
-          {integrations.map(({ id, name }) => (
-            <MenuItem key={id} value={id}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
+        <TextField
+          variant="outlined"
+          label="Diffusion Name"
+          {...register("name", { required: true })}
+          error={!!errors.name?.type}
+          helperText={errors.name?.type === "required" && "Name is required"}
+        />
+        <SelectInput
+          {...register("integrationId", { required: true })}
+          label="Base Integration"
+          defaultValue=""
+          items={integrations}
+          error={!!errors.integrationId?.type}
+        />
       </InputModal>
       <Button
         variant="contained"

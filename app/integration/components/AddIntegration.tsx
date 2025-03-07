@@ -1,15 +1,22 @@
 "use client";
 
 import { Add } from "@mui/icons-material";
-import { Button, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { Button, MenuItem, TextField, Select } from "@mui/material";
 import InputModal from "../../components/Modal";
 import { useState } from "react";
 import { createIntegration } from "../../mocks/integrations";
 import { useRouter } from "next/navigation";
 import { IntegrationRow } from "../../types";
+import SelectInput from "@/app/components/SelectInput";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 interface AddIntegrationProps {
   integrations: IntegrationRow[];
+}
+
+interface IFormData {
+  name: string;
+  parentId: number;
 }
 
 function AddIntegration({ integrations }: AddIntegrationProps) {
@@ -17,16 +24,15 @@ function AddIntegration({ integrations }: AddIntegrationProps) {
 
   const [modalOpen, setModalOpen] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormData>();
+
   const handleOpenModal = () => setModalOpen(true);
 
-  const handleAdd = (formData: FormData) => {
-    const name = formData.get("name")?.toString();
-    const parentId = parseInt(formData.get("parentId")?.toString() ?? "");
-
-    if (!name || !parentId) {
-      return;
-    }
-
+  const handleAdd: SubmitHandler<IFormData> = ({ name, parentId }) => {
     createIntegration(name, parentId).then(({ id }) =>
       navigate.push(`/integration/${id}`)
     );
@@ -38,17 +44,22 @@ function AddIntegration({ integrations }: AddIntegrationProps) {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         text="Enter Integration Name"
-        onSubmit={handleAdd}
+        onSubmit={handleSubmit(handleAdd)}
       >
-        <OutlinedInput name="name" placeholder="Integration Name" />
-        <Select name="parentId" defaultValue={0}>
-          <MenuItem value={0}>Select Parent</MenuItem>
-          {integrations.map(({ id, name }) => (
-            <MenuItem key={id} value={id}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
+        <TextField
+          variant="outlined"
+          label="Integration Name"
+          {...register("name", { required: true })}
+          error={!!errors.name?.type}
+          helperText={errors.name?.type === "required" && "Name is required"}
+        />
+        <SelectInput
+          {...register("parentId", { required: true })}
+          label="Parent Integration"
+          defaultValue=""
+          items={integrations}
+          error={!!errors.parentId?.type}
+        />
       </InputModal>
       <Button
         variant="contained"

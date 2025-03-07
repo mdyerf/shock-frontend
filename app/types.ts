@@ -8,7 +8,7 @@ export type IntegrationRow = {
   childrenCount: number;
 };
 
-export type Country = { name: string; countries?: string[] };
+export type Country = { id: string; name: string; countries?: string[] };
 
 export type Integration = {
   id: number;
@@ -16,16 +16,35 @@ export type Integration = {
   enableUndo: boolean;
   status: ProcessStatus;
   parent: { id: number; name: string };
-  industriesGrouped: boolean;
+  industries: { id: string; name: string }[];
   countries: Country[];
   children: { id: number; name: string }[];
 };
 
-export type GroupHandler = (name: string, rows: string[]) => void;
+export type GroupHandler = (id: string, name: string, rows: string[]) => void;
 
 export type DiffusionRow = {
   id: number;
   name: string;
   status: ProcessStatus;
   integrationName: string;
+};
+
+export type Diffusion = {
+  id: number;
+  name: string;
+  status: ProcessStatus;
+  integration: Integration;
+};
+
+export type Shock = {
+  id: number;
+  demanderCountry: string;
+  demanderIndustry: string;
+  supplierCountry: string;
+  supplierIndustry: string;
+  value: number;
+  sign: "positive" | "negative";
+  percentage: boolean;
+  shockType: 'input' | 'output';
 };

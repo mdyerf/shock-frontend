@@ -2,7 +2,7 @@ import { getIntegration } from "@/app/mocks/integrations";
 import Integration from "../components/Integration";
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: number }>;
 }
 
 export default async function Page({ params }: PageProps) {

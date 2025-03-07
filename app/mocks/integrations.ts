@@ -89,25 +89,29 @@ export function getIntegrations() {
   ] satisfies IntegrationRow[]);
 }
 
-export function getIntegration(id: string) {
+export function getIntegration(id: number) {
   return Promise.resolve({
     id: 1,
     name: "Integration Ali",
     enableUndo: false,
     parent: { id: 2, name: "Parent Ali" },
     status: "idle",
-    industriesGrouped: false,
+    industries: [
+      { id: "1", name: "Computer" },
+      { id: "2", name: "Electronics" },
+      { id: "3", name: "Candy" },
+    ],
     countries: [
-      { name: "Iran" },
-      { name: "US" },
-      { name: "CHN" },
-      { name: "RUS" },
-      { name: "EU", countries: ["FRC", "GER", "POL"] },
+      { id: "IRI", name: "Iran" },
+      { id: "US", name: "United Stated" },
+      { id: "CHN", name: "China" },
+      { id: "RUS", name: "Russia" },
+      { id: "EU", name: "Europe", countries: ["FRC", "GER", "POL"] },
     ],
     children: [],
   } satisfies Integration);
 }
 
 export function createIntegration(name: string, parentId: number) {
-  return getIntegration('');
+  return getIntegration(0);
 }

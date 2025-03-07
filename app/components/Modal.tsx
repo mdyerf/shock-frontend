@@ -3,6 +3,7 @@
 import { FormEventHandler, ReactNode } from "react";
 import { CheckCircle, Error } from "@mui/icons-material";
 import { Box, Button, Modal, Stack, Typography } from "@mui/material";
+import { SubmitHandler } from "react-hook-form";
 
 const style = {
   position: "absolute",
@@ -20,7 +21,7 @@ interface InputModalProps {
   open: boolean;
   onClose?: () => void;
   text: string;
-  onSubmit?: (formData: FormData) => void;
+  onSubmit?: SubmitHandler<any>;
   children: ReactNode;
 }
 
@@ -35,8 +36,8 @@ function InputModal({
     <Modal open={open} onClose={onClose}>
       <Box sx={style} display="flex" flexDirection="column" gap={1}>
         <Typography variant="h6">{text}</Typography>
-        <form action={onSubmit}>
-          <Box display="flex" flexDirection="column" gap={1} my={1}>
+        <form onSubmit={onSubmit}>
+          <Box display="flex" flexDirection="column" gap={2} my={1}>
             {children}
           </Box>
           <Stack direction="row" justifyContent="space-between">

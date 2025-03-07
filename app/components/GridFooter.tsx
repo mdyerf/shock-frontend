@@ -1,21 +1,34 @@
 "use client";
 
 import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { GridFooter, useGridApiContext } from "@mui/x-data-grid";
-import { Chip, OutlinedInput, Stack } from "@mui/material";
+import { Chip, Stack, TextField } from "@mui/material";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import InputModal from "./Modal";
+
+interface IFormInput {
+  id: string;
+  name: string;
+}
 
 function Footer(onGroup?: Function) {
   return () => {
     const [openModal, setOpenModal] = useState(false);
+
     const apiRef = useGridApiContext();
+
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+    } = useForm<IFormInput>();
 
     const getRows = () =>
       Array.from(apiRef.current.getSelectedRows().values()).map((r) => r.name);
 
-    const handleCreateGroup = (formData: FormData) => {
-      onGroup?.(formData.get("name"), getRows());
+    const handleCreateGroup: SubmitHandler<IFormInput> = ({ id, name }) => {
+      onGroup?.(id, name, getRows());
       apiRef.current.setRowSelectionModel([]);
     };
 
@@ -26,10 +39,27 @@ function Footer(onGroup?: Function) {
         <InputModal
           open={openModal}
           onClose={() => setOpenModal(false)}
-          onSubmit={handleCreateGroup}
+          onSubmit={handleSubmit(handleCreateGroup)}
           text="Enter Group Name"
         >
-          <OutlinedInput name="name" placeholder="Group Name" />
+          <TextField
+            variant="outlined"
+            label="Group Symbol"
+            {...register("id", { required: true })}
+            error={!!errors.id?.type}
+            helperText={
+              errors.id?.type === "required" && "Group Symbol is required"
+            }
+          />
+          <TextField
+            variant="outlined"
+            label="Group Name"
+            {...register("name", { required: "Enter Group Name" })}
+            error={!!errors.name?.type}
+            helperText={
+              errors.name?.type === "required" && "Group name is required"
+            }
+          />
         </InputModal>
         <Stack
           direction="row-reverse"

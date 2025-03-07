@@ -1,4 +1,5 @@
-import { DiffusionRow } from "../types";
+import { Diffusion, DiffusionRow } from "../types";
+import { getIntegration } from "./integrations";
 
 export function getDiffusions() {
   return Promise.resolve([
@@ -21,4 +22,13 @@ export function getDiffusions() {
       integrationName: "Grouping 5 + 1",
     },
   ] satisfies DiffusionRow[]);
+}
+
+export async function getDiffusion(id: number) {
+  return {
+    id: 1,
+    name: "Diffusion 1",
+    status: "idle",
+    integration: await getIntegration(0),
+  } satisfies Diffusion;
 }

@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Chip,
-  Divider,
   IconButton,
   LinearProgress,
   Stack,
@@ -31,12 +30,17 @@ function Integration({
   parent,
   enableUndo,
   status,
-  industriesGrouped,
+  industries,
   countries,
   children,
 }: IntegrationProps) {
   const [countryGroups, setGroups] = useState<Country[]>([]);
   const [groupIndustries, setGroupIndustries] = useState(false);
+
+  const industriesGrouped = useMemo(
+    () => industries.length === 1,
+    [industries.length]
+  );
 
   const groups = useMemo(
     () =>
@@ -56,8 +60,8 @@ function Integration({
 
   const handleUnGroupIndustries = () => setGroupIndustries(false);
 
-  const handleCountryGroup: GroupHandler = (name, countries) =>
-    setGroups((gs) => [...gs, { name, countries }]);
+  const handleCountryGroup: GroupHandler = (id ,name, countries) =>
+    setGroups((gs) => [...gs, { id, name, countries }]);
 
   const handleRemoveGroup = (name: string) => () =>
     setGroups((gs) => gs.filter((g) => g.name !== name));
