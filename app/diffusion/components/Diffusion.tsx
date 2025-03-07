@@ -16,6 +16,7 @@ import { Diffusion as DataType, Shock } from "@/app/types";
 import InputModal from "@/app/components/Modal";
 import ShockForm from "./ShockForm";
 import { ArrowBack, ArrowForward, Cancel, Close } from "@mui/icons-material";
+import ShocksBadges from "./ShocksBadges";
 
 type DiffusionProps = DataType;
 
@@ -108,59 +109,7 @@ function Diffusion({ name, status, integration }: DiffusionProps) {
             onSubmit={handleAddShock}
           />
 
-          <Stack width={300} gap={1}>
-            <Typography variant="body1">Shocks:</Typography>
-            <Box
-              display="flex"
-              flexDirection="row"
-              flexWrap="wrap"
-              gap={1}
-              m={1}
-            >
-              {shocks.map(
-                ({
-                  id,
-                  demanderCountry,
-                  demanderIndustry,
-                  percentage,
-                  shockType,
-                  sign,
-                  supplierCountry,
-                  supplierIndustry,
-                  value,
-                }) => (
-                  <Box key={id} border={1} borderRadius={10} px={2} py={1}>
-                    <Stack direction="row" flexWrap="wrap" gap={1}>
-                      <Typography variant="body1">
-                        {demanderCountry}_{demanderIndustry}
-                      </Typography>
-                      {shockType === "input" ? (
-                        <ArrowForward color="primary" />
-                      ) : (
-                        <ArrowBack color="secondary" />
-                      )}
-                      <Typography variant="body1">
-                        {supplierCountry}_{supplierIndustry}
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        color={sign === "negative" ? "error" : "success"}
-                        fontWeight={800}
-                      >
-                        {sign === "negative" ? "-" : "+"}
-                        {value}
-                        {percentage ? "%" : "$"}
-                      </Typography>
-                      <Cancel
-                        sx={{ cursor: "pointer" }}
-                        onClick={handleDeleteShock(id)}
-                      />
-                    </Stack>
-                  </Box>
-                )
-              )}
-            </Box>
-          </Stack>
+          <ShocksBadges shocks={shocks} onDelete={handleDeleteShock} />
         </Stack>
       </Box>
     </>

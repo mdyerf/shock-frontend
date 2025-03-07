@@ -19,11 +19,10 @@ import { useState } from "react";
 interface ShockFormProps {
   countries: Integration["countries"];
   industries: Integration["industries"];
-  onSubmit: SubmitHandler<Omit<Shock, 'id'>>;
+  onSubmit: SubmitHandler<Omit<Shock, "id">>;
 }
 
-type IFormData = Omit<Shock, 'shockType' | 'id'>;
-
+type IFormData = Omit<Shock, "shockType" | "id">;
 
 function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
   const [shockType, setShockType] = useState<"input" | "output">("input");
@@ -40,6 +39,9 @@ function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
   return (
     <form onSubmit={submit(handleSubmit)}>
       <Stack flex={1} gap={2} sx={{ borderLeft: 1, pl: 2 }}>
+        <Typography variant="h6" textAlign="center">
+          Define a New Shock
+        </Typography>
         <Typography variant="body1">Demander</Typography>
         <Stack direction="row" gap={1}>
           <SelectInput
