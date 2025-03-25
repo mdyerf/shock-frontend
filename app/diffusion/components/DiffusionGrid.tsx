@@ -5,6 +5,8 @@ import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/app/components/DataGrid";
 import { DiffusionRow } from "../../types";
 import StatusChip from "@/app/components/StatusChip";
+import { useQuery } from "@tanstack/react-query";
+import api from "@/app/api";
 
 const columns: GridColDef[] = [
   {
@@ -24,18 +26,19 @@ const columns: GridColDef[] = [
     renderCell: (params) => <StatusChip status={params.value} />,
   },
   {
-    field: "integrationName",
+    field: "integration",
     headerName: "Integration",
     flex: 1,
   },
 ];
 
-interface DiffusionGridProps {
-  rows: DiffusionRow[];
-}
+function DiffusionGrid() {
+  const { data: diffusions } = useQuery<DiffusionRow[]>({
+    queryKey: ["diffusion"],
+    queryFn: () => api.get("/diffusions").then((res) => res.data),
+  });
 
-function DiffusionGrid({ rows }: DiffusionGridProps) {
-  return <DataGrid rows={rows} columns={columns} />;
+  return <DataGrid rows={diffusions ?? []} columns={columns} />;
 }
 
 export default DiffusionGrid;

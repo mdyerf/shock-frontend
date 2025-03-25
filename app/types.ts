@@ -1,9 +1,8 @@
-export type ProcessStatus = "running" | "idle";
+export type ProcessStatus = "pending" | "running" | "failed" | "finished";
 
 export type IntegrationRow = {
   id: number;
   name: string;
-  status: ProcessStatus;
   parentName: string;
   childrenCount: number;
 };
@@ -14,7 +13,6 @@ export type Integration = {
   id: number;
   name: string;
   enableUndo: boolean;
-  status: ProcessStatus;
   parent: { id: number; name: string };
   industries: { id: string; name: string }[];
   countries: Country[];
@@ -27,7 +25,7 @@ export type DiffusionRow = {
   id: number;
   name: string;
   status: ProcessStatus;
-  integrationName: string;
+  integration: string;
 };
 
 export type Diffusion = {

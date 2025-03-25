@@ -3,26 +3,26 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Add } from "@mui/icons-material";
-import { Button, MenuItem, TextField, Select } from "@mui/material";
-import { IntegrationRow } from "@/app/types";
+import { Button, TextField } from "@mui/material";
 import { createIntegration } from "../../mocks/integrations";
 import InputModal from "@/app/components/Modal";
 import { SubmitHandler, useForm } from "react-hook-form";
 import SelectInput from "@/app/components/SelectInput";
-
-interface AddDiffusionProps {
-  integrations: IntegrationRow[];
-}
-
+import { useQuery } from "@tanstack/react-query";
 interface IFormData {
   name: string;
   integrationId: number;
 }
 
-function AddDiffusion({ integrations }: AddDiffusionProps) {
+function AddDiffusion() {
   const navigate = useRouter();
 
   const [modalOpen, setModalOpen] = useState(false);
+
+  const { data: integrations } = useQuery({
+    queryKey: ['integrations'],
+    queryFn: () => [{ id: '2018', name: '2018'}]
+  })
 
   const {
     register,
@@ -57,7 +57,7 @@ function AddDiffusion({ integrations }: AddDiffusionProps) {
           {...register("integrationId", { required: true })}
           label="Base Integration"
           defaultValue=""
-          items={integrations}
+          items={integrations ?? []}
           error={!!errors.integrationId?.type}
         />
       </InputModal>

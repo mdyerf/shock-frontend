@@ -7,9 +7,11 @@ interface StatusChipProps {
 
 function StatusChip({ status }: StatusChipProps) {
   const colors = {
-    idle: "success",
-    running: "error",
-  } satisfies Record<ProcessStatus, "success" | "error">;
+    pending: "warning",
+    running: "info",
+    failed: 'error',
+    finished: "success",
+  } satisfies Record<ProcessStatus, "success" | "error" | "warning" | "info">;
 
   return <Chip label={status} color={colors[status]} size="small" />;
 }
