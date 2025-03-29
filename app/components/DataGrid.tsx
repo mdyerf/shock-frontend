@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   DataGrid,
   GridColDef,
   GridFooter,
   GridToolbarQuickFilter,
   GridValidRowModel,
+  GridPaginationModel,
 } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { GroupHandler } from "../types";
@@ -33,13 +34,21 @@ function CustomDataGrid({
   onGroup,
   checkboxSelection = false,
 }: DataGridProps) {
+  // 🧠 Store pagination state
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: 0,
+    pageSize: 8,
+  });
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <DataGrid
         rows={rows}
         columns={columns}
+        pagination
+        paginationModel={paginationModel}
+        onPaginationModelChange={(model) => setPaginationModel(model)} // 👈 listen for changes
         pageSizeOptions={[8]}
-        paginationModel={{ pageSize: 8, page: 0 }}
         getRowClassName={(params) =>
           params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
         }

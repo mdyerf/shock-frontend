@@ -31,8 +31,19 @@ export type DiffusionRow = {
 export type Diffusion = {
   id: number;
   name: string;
+  created_at: string;
+  updated_at: string;
   status: ProcessStatus;
-  integration: Integration;
+  number_of_iterations: number;
+  integration: string;
+  sources: string[];
+  destinations: string[];
+  shock_types: Shock['shockType'][];
+  shock_amounts: string[];
+  threshold_one: number;
+  threshold_two: number;
+  threshold_three: number;
+  logs: object;
 };
 
 export type Shock = {
@@ -44,5 +55,5 @@ export type Shock = {
   value: number;
   sign: "positive" | "negative";
   percentage: boolean;
-  shockType: 'input' | 'output';
+  shockType: "in" | "out";
 };

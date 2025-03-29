@@ -29,7 +29,7 @@ function ShocksBadges({ shocks, onDelete }: Props) {
                 <Typography variant="body1">
                   {demanderCountry}_{demanderIndustry}
                 </Typography>
-                {shockType === "input" ? (
+                {shockType === "in" ? (
                   <ArrowForward color="primary" />
                 ) : (
                   <ArrowBack color="secondary" />

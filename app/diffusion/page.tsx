@@ -1,6 +1,6 @@
-import { Stack, Typography } from "@mui/material";
-import { getIntegrations } from "../mocks/integrations";
-import AddDiffusion from "./components/AddDiffusion";
+import Link from "next/link";
+import { Button, Stack, Typography } from "@mui/material";
+import { Add } from "@mui/icons-material";
 import DiffusionGrid from "./components/DiffusionGrid";
 
 async function Page() {
@@ -8,7 +8,16 @@ async function Page() {
     <>
       <Stack direction="row" justifyContent="space-between" mb={2}>
         <Typography variant="h4">Diffusions</Typography>
-        <AddDiffusion />
+        <Link href="/diffusion/new">
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<Add />}
+            sx={{ textTransform: "none" }}
+          >
+            Add Diffusion
+          </Button>
+        </Link>
       </Stack>
       <DiffusionGrid />
     </>

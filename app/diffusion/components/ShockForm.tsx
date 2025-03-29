@@ -25,7 +25,7 @@ interface ShockFormProps {
 type IFormData = Omit<Shock, "shockType" | "id">;
 
 function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
-  const [shockType, setShockType] = useState<"input" | "output">("input");
+  const [shockType, setShockType] = useState<Shock["shockType"]>("in");
 
   const {
     register,
@@ -119,15 +119,15 @@ function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
             <ButtonGroup sx={{ width: 200 }}>
               <Button
                 fullWidth
-                variant={shockType === "input" ? "contained" : "outlined"}
-                onClick={() => setShockType("input")}
+                variant={shockType === "in" ? "contained" : "outlined"}
+                onClick={() => setShockType("in")}
               >
                 Input
               </Button>
               <Button
                 fullWidth
-                variant={shockType === "output" ? "contained" : "outlined"}
-                onClick={() => setShockType("output")}
+                variant={shockType === "out" ? "contained" : "outlined"}
+                onClick={() => setShockType("out")}
               >
                 Output
               </Button>
