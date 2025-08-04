@@ -38,7 +38,7 @@ export type Diffusion = {
   integration: string;
   sources: string[];
   destinations: string[];
-  shock_types: Shock['shockType'][];
+  shock_types: Shock["shockType"][];
   shock_amounts: string[];
   threshold_one: number;
   threshold_two: number;
@@ -59,5 +59,17 @@ export type Shock = {
 };
 
 export type IterationRow = {
+  id: string;
+  parentId: string[];
+  shockId: string;
+  Iteration: string;
+  origin: string;
+  value: string;
+  inOut: string;
   source: string;
-}
+  destination: string;
+  shockType: string;
+  shock: string;
+  ratio: string;
+  comment: string;
+};

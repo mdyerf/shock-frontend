@@ -21,6 +21,7 @@ import coseBilkent from "cytoscape-cose-bilkent";
 import dagre from "cytoscape-dagre";
 import klay from "cytoscape-klay";
 import NodesGrid from "./NodesGrid";
+import { IterationRow } from "@/app/types";
 
 cytoscape.use(dagre);
 cytoscape.use(klay);
@@ -84,7 +85,7 @@ interface IProps {
   }[];
   tables: {
     iteration: number;
-    rows: { source: string }[];
+    rows: IterationRow[];
   }[];
 }
 
@@ -98,18 +99,23 @@ const DiffusionDisplay: FC<IProps> = ({ graphs, tables }) => {
 
   const elements = useMemo(
     () =>
-      graphs?.length ? [
-        ...graphs[iteration].nodes.map(({ id }) => ({
-          data: { id, label: id },
-        })),
-        ...graphs[iteration].edges.map(({ source, target, weight }) => ({
-          data: { source, target, label: `${weight}` },
-        })),
-      ] : [],
+      graphs?.length
+        ? [
+            ...graphs[iteration].nodes.map(({ id }) => ({
+              data: { id, label: id },
+            })),
+            ...graphs[iteration].edges.map(({ source, target, weight }) => ({
+              data: { source, target, label: `${weight}` },
+            })),
+          ]
+        : [],
     [graphs, iteration]
   );
 
-  const rows = useMemo(() => tables?.length ? tables[iteration].rows : [], [tables, iteration]);
+  const rows = useMemo(
+    () => (tables?.length ? tables[iteration].rows : []),
+    [tables, iteration]
+  );
 
   useEffect(() => {
     if (cyRef.current) {
