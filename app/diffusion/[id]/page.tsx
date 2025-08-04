@@ -8,7 +8,7 @@ interface IPageProps {
 async function Page({ params }: IPageProps) {
   const { id } = await params;
 
-  const { graphs, tables } = getDiffusionIterations(id);
+  const { graphs, tables } = await getDiffusionIterations(id);
 
   return <DiffusionDisplay graphs={graphs} tables={tables} />;
 }
