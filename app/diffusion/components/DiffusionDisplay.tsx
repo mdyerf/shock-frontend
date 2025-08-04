@@ -97,16 +97,19 @@ const DiffusionDisplay: FC<IProps> = ({ graphs, tables }) => {
   const [display, setDisplay] = useState<DisplayMode>("table");
 
   const elements = useMemo(
-    () => [
-      ...graphs[iteration].nodes.map(({ id }) => ({
-        data: { id, label: id },
-      })),
-      ...graphs[iteration].edges.map(({ source, target, weight }) => ({
-        data: { source, target, label: `${weight}` },
-      })),
-    ],
+    () =>
+      graphs?.length ? [
+        ...graphs[iteration].nodes.map(({ id }) => ({
+          data: { id, label: id },
+        })),
+        ...graphs[iteration].edges.map(({ source, target, weight }) => ({
+          data: { source, target, label: `${weight}` },
+        })),
+      ] : [],
     [graphs, iteration]
   );
+
+  const rows = useMemo(() => tables?.length ? tables[iteration].rows : [], [tables, iteration]);
 
   useEffect(() => {
     if (cyRef.current) {
@@ -188,7 +191,7 @@ const DiffusionDisplay: FC<IProps> = ({ graphs, tables }) => {
               }}
             />
           )}
-          {display === "table" && <NodesGrid rows={tables[iteration].rows} />}
+          {display === "table" && <NodesGrid rows={rows} />}
         </Box>
       </Stack>
     </>
