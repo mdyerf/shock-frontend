@@ -5,7 +5,7 @@ export const getDiffusionGraph = (id: string) =>
 
 export const getDiffusionTable = (
   id: string,
-  sortBy?: string,
+  sortBy: string = 'Row',
   order: "asc" | "desc" = "desc"
 ) =>
   api
