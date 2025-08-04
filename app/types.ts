@@ -57,3 +57,7 @@ export type Shock = {
   percentage: boolean;
   shockType: "in" | "out";
 };
+
+export type IterationRow = {
+  source: string;
+}

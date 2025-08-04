@@ -15,3 +15,21 @@ declare module 'react-cytoscapejs' {
 
   export default CytoscapeComponent;
 }
+
+declare module "cytoscape-cose-bilkent" {
+  import cytoscape from "cytoscape";
+  const register: (cy: typeof cytoscape) => void;
+  export default register;
+}
+
+declare module "cytoscape-dagre" {
+  import cytoscape from "cytoscape";
+  const register: (cy: typeof cytoscape) => void;
+  export default register;
+}
+
+declare module "cytoscape-klay" {
+  import cytoscape from "cytoscape";
+  const register: (cy: typeof cytoscape) => void;
+  export default register;
+}

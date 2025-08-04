@@ -20,6 +20,7 @@ import cytoscape, { Core } from "cytoscape";
 import coseBilkent from "cytoscape-cose-bilkent";
 import dagre from "cytoscape-dagre";
 import klay from "cytoscape-klay";
+import NodesGrid from "./NodesGrid";
 
 cytoscape.use(dagre);
 cytoscape.use(klay);
@@ -74,33 +75,37 @@ const style = [
   },
 ];
 
-type DisplayMode = 'table' | 'graph';
+type DisplayMode = "table" | "graph";
 
 interface IProps {
-  iterations: {
+  graphs: {
     nodes: { id: string }[];
     edges: { source: string; target: string; weight: number }[];
   }[];
+  tables: {
+    iteration: number;
+    rows: { source: string }[];
+  }[];
 }
 
-const IterationsGraph: FC<IProps> = ({ iterations }) => {
+const DiffusionDisplay: FC<IProps> = ({ graphs, tables }) => {
   const cyRef = useRef<Core | null>(null);
 
   const [iteration, setIteration] = useState(0);
   const [showGroupsModal, setShowGroupsModal] = useState(false);
   const [showFiltersModal, setShowFiltersModal] = useState(false);
-  const [display, setDisplay] = useState<DisplayMode>('table')
+  const [display, setDisplay] = useState<DisplayMode>("table");
 
   const elements = useMemo(
     () => [
-      ...iterations[iteration].nodes.map(({ id }) => ({
+      ...graphs[iteration].nodes.map(({ id }) => ({
         data: { id, label: id },
       })),
-      ...iterations[iteration].edges.map(({ source, target, weight }) => ({
+      ...graphs[iteration].edges.map(({ source, target, weight }) => ({
         data: { source, target, label: `${weight}` },
       })),
     ],
-    [iterations, iteration]
+    [graphs, iteration]
   );
 
   useEffect(() => {
@@ -131,7 +136,7 @@ const IterationsGraph: FC<IProps> = ({ iterations }) => {
             <Select
               value={display}
               label="Display"
-              onChange={e => setDisplay(e.target.value as DisplayMode)}
+              onChange={(e) => setDisplay(e.target.value as DisplayMode)}
             >
               <MenuItem value="table">Table</MenuItem>
               <MenuItem value="graph">Graph</MenuItem>
@@ -155,12 +160,12 @@ const IterationsGraph: FC<IProps> = ({ iterations }) => {
           </IconButton>
           <LinearProgress
             variant="determinate"
-            value={((iteration + 1) * 100) / iterations.length}
+            value={((iteration + 1) * 100) / graphs.length}
             sx={{ width: "100%" }}
           />
           <IconButton
             onClick={() =>
-              setIteration((it) => Math.min(it + 1, iterations.length - 1))
+              setIteration((it) => Math.min(it + 1, graphs.length - 1))
             }
           >
             <ChevronRightIcon />
@@ -168,10 +173,14 @@ const IterationsGraph: FC<IProps> = ({ iterations }) => {
         </Stack>
 
         <Box flex={1}>
-          {display === 'graph' && (
+          {display === "graph" && (
             <CytoscapeComponent
               elements={elements}
-              style={{ width: "100%", height: "100%", border: "1px solid gray" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                border: "1px solid gray",
+              }}
               layout={layoutOptions}
               stylesheet={style}
               cy={(cy) => {
@@ -179,12 +188,10 @@ const IterationsGraph: FC<IProps> = ({ iterations }) => {
               }}
             />
           )}
-          {display === 'table' && (
-            
-          )}
+          {display === "table" && <NodesGrid rows={tables[iteration].rows} />}
         </Box>
       </Stack>
     </>
   );
 };
-export default IterationsGraph;
+export default DiffusionDisplay;

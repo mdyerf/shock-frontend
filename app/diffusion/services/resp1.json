@@ -833,8 +833,9 @@
     }
   ],
   "tables": [
-    [],
-    []
+    { "iteration": 0, "rows": [{ "source": "china"}, { "source": "china"}] },
+    { "iteration": 1, "rows": [{ "source": " "}] },
+    { "iteration": 2, "rows": [{ "source": " "}] }
   ],
   "country_groups": [["USA", "CN1"]],
   "group_all_industries": true,

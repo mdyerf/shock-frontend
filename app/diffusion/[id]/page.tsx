@@ -1,4 +1,4 @@
-import IterationsGraph from "../components/IterationsGraph";
+import DiffusionDisplay from "../components/DiffusionDisplay";
 import { getDiffusionIterations } from "../services/iterations";
 
 interface IPageProps {
@@ -8,9 +8,9 @@ interface IPageProps {
 async function Page({ params }: IPageProps) {
   const { id } = await params;
 
-  const log = getDiffusionIterations(id);
+  const { graphs, tables } = getDiffusionIterations(id);
 
-  return <IterationsGraph iterations={log} />;
+  return <DiffusionDisplay graphs={graphs} tables={tables} />;
 }
 
 export default Page;
