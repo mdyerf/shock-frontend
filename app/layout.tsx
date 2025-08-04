@@ -1,6 +1,5 @@
 import * as React from "react";
-import { AppProvider } from "@toolpad/core/nextjs";
-import PivotTableChartIcon from "@mui/icons-material/PivotTableChart";
+import { AppProvider } from "@toolpad/core";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import type { Navigation } from "@toolpad/core/AppProvider";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";

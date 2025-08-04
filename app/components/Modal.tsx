@@ -10,7 +10,6 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
   bgcolor: "background.paper",
   borderRadius: 2,
   boxShadow: "#fffa 0 0 0 1000px",
@@ -21,6 +20,8 @@ interface InputModalProps {
   open: boolean;
   onClose?: () => void;
   text: string;
+  submitText?: string;
+  closeText?: string;
   onSubmit?: SubmitHandler<any>;
   children: ReactNode;
 }
@@ -30,6 +31,8 @@ function InputModal({
   text,
   onClose,
   onSubmit,
+  submitText = 'Submit',
+  closeText = 'Cancel',
   children,
 }: InputModalProps) {
   return (
@@ -48,7 +51,7 @@ function InputModal({
                 type="submit"
                 color="success"
               >
-                Submit
+                {submitText}
               </Button>
             )}
             {onClose && (
@@ -58,7 +61,7 @@ function InputModal({
                 color="error"
                 onClick={onClose}
               >
-                Cancel
+                {closeText}
               </Button>
             )}
           </Stack>

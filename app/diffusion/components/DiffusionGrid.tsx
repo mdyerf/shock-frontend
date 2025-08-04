@@ -8,8 +8,11 @@ import InputModal from "@/app/components/Modal";
 import DiffusionInfo from "./DiffusionInfo";
 import { DiffusionRow } from "../../types";
 import { getGridColumns } from "../utils/columns";
+import { useRouter } from "next/navigation";
 
 function DiffusionGrid() {
+  const navigate = useRouter();
+
   const { data: diffusions } = useQuery<DiffusionRow[]>({
     queryKey: ["diffusions"],
     queryFn: () => api.get("/diffusions").then((res) => res.data),
@@ -33,6 +36,9 @@ function DiffusionGrid() {
       <InputModal
         open={modalOpen !== null}
         text="Diffusion Info"
+        submitText="View Graph"
+        onSubmit={() => navigate.push(`/diffusion/${modalOpen}`)}
+        closeText="Close"
         onClose={() => setModalOpen(null)}
       >
         <DiffusionInfo id={modalOpen as number} />

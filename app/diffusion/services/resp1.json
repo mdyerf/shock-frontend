@@ -1,0 +1,846 @@
+{
+  "diffusion_id": 33,
+  "graphs": [
+    {
+      "iteration": 0,
+      "nodes": [
+        {
+          "id": "CN1_26"
+        },
+        {
+          "id": "USA_26"
+        },
+        {
+          "id": "CN2_26"
+        }
+      ],
+      "edges": [
+        {
+          "source": "CN1_26",
+          "target": "USA_26",
+          "weight": -1000.0
+        },
+        {
+          "source": "USA_26",
+          "target": "CN2_26",
+          "weight": 284.186
+        }
+      ]
+    },
+    {
+      "iteration": 1,
+      "nodes": [
+        {
+          "id": "USA_22"
+        },
+        {
+          "id": "CN1_17T18"
+        },
+        {
+          "id": "CN1_55T56"
+        },
+        {
+          "id": "USA_85"
+        },
+        {
+          "id": "USA_86T88"
+        },
+        {
+          "id": "USA_26"
+        },
+        {
+          "id": "USA_64T66"
+        },
+        {
+          "id": "KOR_26"
+        },
+        {
+          "id": "USA_17T18"
+        },
+        {
+          "id": "JPN_26"
+        },
+        {
+          "id": "THA_26"
+        },
+        {
+          "id": "USA_49"
+        },
+        {
+          "id": "USA_58T60"
+        },
+        {
+          "id": "USA_20"
+        },
+        {
+          "id": "MX2_29"
+        },
+        {
+          "id": "CN1_28"
+        },
+        {
+          "id": "CN1_24"
+        },
+        {
+          "id": "USA_68"
+        },
+        {
+          "id": "CN1_25"
+        },
+        {
+          "id": "USA_41T43"
+        },
+        {
+          "id": "CN2_26"
+        },
+        {
+          "id": "CN1_26"
+        },
+        {
+          "id": "CN1_62T63"
+        },
+        {
+          "id": "CN1_35"
+        },
+        {
+          "id": "USA_69T75"
+        },
+        {
+          "id": "USA_52"
+        },
+        {
+          "id": "USA_10T12"
+        },
+        {
+          "id": "USA_62T63"
+        },
+        {
+          "id": "CN1_10T12"
+        },
+        {
+          "id": "CN1_52"
+        },
+        {
+          "id": "CN1_49"
+        },
+        {
+          "id": "NLD_26"
+        },
+        {
+          "id": "USA_24"
+        },
+        {
+          "id": "USA_61"
+        },
+        {
+          "id": "USA_28"
+        },
+        {
+          "id": "CN1_77T82"
+        },
+        {
+          "id": "USA_30"
+        },
+        {
+          "id": "CAN_61"
+        },
+        {
+          "id": "CN1_45T47"
+        },
+        {
+          "id": "DEU_26"
+        },
+        {
+          "id": "USA_35"
+        },
+        {
+          "id": "CN1_23"
+        },
+        {
+          "id": "CN1_64T66"
+        },
+        {
+          "id": "CN1_22"
+        },
+        {
+          "id": "USA_31T33"
+        },
+        {
+          "id": "USA_25"
+        },
+        {
+          "id": "USA_94T96"
+        },
+        {
+          "id": "USA_77T82"
+        },
+        {
+          "id": "USA_84"
+        },
+        {
+          "id": "CN1_27"
+        },
+        {
+          "id": "CN1_20"
+        },
+        {
+          "id": "CN1_69T75"
+        },
+        {
+          "id": "USA_27"
+        },
+        {
+          "id": "MX2_26"
+        },
+        {
+          "id": "SGP_26"
+        },
+        {
+          "id": "MYS_26"
+        },
+        {
+          "id": "USA_45T47"
+        },
+        {
+          "id": "USA_29"
+        },
+        {
+          "id": "TWN_26"
+        }
+      ],
+      "edges": [
+        {
+          "source": "USA_26",
+          "target": "USA_20",
+          "weight": -17.018288
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_22",
+          "weight": -7.8164253
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_24",
+          "weight": -20.960623
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_25",
+          "weight": -34.4635
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_27",
+          "weight": -7.5653405
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_35",
+          "weight": -6.060354
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_45T47",
+          "weight": -123.659325
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_49",
+          "weight": -14.80195
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_52",
+          "weight": -18.037592
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_58T60",
+          "weight": -5.0022893
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_62T63",
+          "weight": -11.872716
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_64T66",
+          "weight": -14.331793
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_68",
+          "weight": -38.033092
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_69T75",
+          "weight": -291.1665
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_77T82",
+          "weight": -33.915417
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_84",
+          "weight": -5.4257526
+        },
+        {
+          "source": "USA_26",
+          "target": "CAN_61",
+          "weight": -5.4035296
+        },
+        {
+          "source": "USA_26",
+          "target": "DEU_26",
+          "weight": -8.548808
+        },
+        {
+          "source": "USA_26",
+          "target": "KOR_26",
+          "weight": -28.526762
+        },
+        {
+          "source": "USA_26",
+          "target": "NLD_26",
+          "weight": -8.715185
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_10T12",
+          "weight": -10.193033
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_17T18",
+          "weight": -9.986754
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_20",
+          "weight": -18.337885
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_22",
+          "weight": -8.262804
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_24",
+          "weight": -11.42153
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_25",
+          "weight": -19.974754
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_26",
+          "weight": -99.46669
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_27",
+          "weight": -19.251518
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_28",
+          "weight": -33.11401
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_29",
+          "weight": -76.914566
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_30",
+          "weight": -77.42373
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_31T33",
+          "weight": -15.194591
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_41T43",
+          "weight": -26.324463
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_45T47",
+          "weight": -67.23407
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_58T60",
+          "weight": -21.137299
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_61",
+          "weight": -70.54512
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_62T63",
+          "weight": -39.850906
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_64T66",
+          "weight": -9.935471
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_69T75",
+          "weight": -75.94138
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_77T82",
+          "weight": -18.364151
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_84",
+          "weight": -113.49481
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_85",
+          "weight": -7.995657
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_86T88",
+          "weight": -43.1496
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_94T96",
+          "weight": -12.496304
+        },
+        {
+          "source": "USA_26",
+          "target": "MYS_26",
+          "weight": -20.858763
+        },
+        {
+          "source": "USA_26",
+          "target": "SGP_26",
+          "weight": -7.2885885
+        },
+        {
+          "source": "USA_26",
+          "target": "TWN_26",
+          "weight": -29.556213
+        },
+        {
+          "source": "USA_26",
+          "target": "THA_26",
+          "weight": -11.472945
+        },
+        {
+          "source": "USA_26",
+          "target": "MX2_26",
+          "weight": -35.29619
+        },
+        {
+          "source": "USA_26",
+          "target": "MX2_29",
+          "weight": -6.5640516
+        },
+        {
+          "source": "USA_26",
+          "target": "CN1_26",
+          "weight": -50.93851
+        },
+        {
+          "source": "USA_26",
+          "target": "CN1_27",
+          "weight": -5.1294303
+        },
+        {
+          "source": "USA_26",
+          "target": "CN1_28",
+          "weight": -6.116334
+        },
+        {
+          "source": "USA_26",
+          "target": "CN2_26",
+          "weight": -26.133644
+        },
+        {
+          "source": "CN2_26",
+          "target": "JPN_26",
+          "weight": 7.4582667
+        },
+        {
+          "source": "CN2_26",
+          "target": "KOR_26",
+          "weight": 28.377583
+        },
+        {
+          "source": "CN2_26",
+          "target": "TWN_26",
+          "weight": 19.546059
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_10T12",
+          "weight": 5.1317573
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_20",
+          "weight": 7.579536
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_22",
+          "weight": 12.986493
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_23",
+          "weight": 11.505855
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_24",
+          "weight": 18.252903
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_25",
+          "weight": 9.23151
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_26",
+          "weight": 237.49878
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_27",
+          "weight": 29.054482
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_28",
+          "weight": 14.506842
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_35",
+          "weight": 5.7256737
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_45T47",
+          "weight": 35.250248
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_49",
+          "weight": 13.049358
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_62T63",
+          "weight": 5.894046
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_64T66",
+          "weight": 9.029561
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_69T75",
+          "weight": 7.730043
+        },
+        {
+          "source": "CN2_26",
+          "target": "CN1_77T82",
+          "weight": 9.134947
+        },
+        {
+          "source": "CN1_26",
+          "target": "JPN_26",
+          "weight": -11.150609
+        },
+        {
+          "source": "CN1_26",
+          "target": "KOR_26",
+          "weight": -42.42639
+        },
+        {
+          "source": "CN1_26",
+          "target": "MYS_26",
+          "weight": -6.28274
+        },
+        {
+          "source": "CN1_26",
+          "target": "TWN_26",
+          "weight": -29.22267
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_10T12",
+          "weight": -10.114171
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_17T18",
+          "weight": -6.0079155
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_20",
+          "weight": -14.938493
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_22",
+          "weight": -25.595055
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_23",
+          "weight": -22.676867
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_24",
+          "weight": -35.974613
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_25",
+          "weight": -18.194366
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_27",
+          "weight": -57.26342
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_28",
+          "weight": -28.591507
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_35",
+          "weight": -11.284719
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_45T47",
+          "weight": -69.47465
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_49",
+          "weight": -25.718956
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_52",
+          "weight": -5.1898103
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_55T56",
+          "weight": -5.984623
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_62T63",
+          "weight": -11.616564
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_64T66",
+          "weight": -17.796345
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_69T75",
+          "weight": -15.2351265
+        },
+        {
+          "source": "CN1_26",
+          "target": "CN1_77T82",
+          "weight": -18.00405
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_24",
+          "weight": 6.0494423
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_25",
+          "weight": 9.946506
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_45T47",
+          "weight": 35.6893
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_52",
+          "weight": 5.2058268
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_68",
+          "weight": 10.976725
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_69T75",
+          "weight": 84.033516
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_77T82",
+          "weight": 9.788323
+        },
+        {
+          "source": "USA_26",
+          "target": "KOR_26",
+          "weight": 8.233105
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_20",
+          "weight": 5.2924943
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_25",
+          "weight": 5.764911
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_26",
+          "weight": 28.707066
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_27",
+          "weight": 5.5561776
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_28",
+          "weight": 9.557029
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_29",
+          "weight": 22.198301
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_30",
+          "weight": 22.345251
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_41T43",
+          "weight": 7.5974994
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_45T47",
+          "weight": 19.404415
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_58T60",
+          "weight": 6.1004324
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_61",
+          "weight": 20.360016
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_62T63",
+          "weight": 11.501364
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_69T75",
+          "weight": 21.91743
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_77T82",
+          "weight": 5.300075
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_84",
+          "weight": 32.755722
+        },
+        {
+          "source": "USA_26",
+          "target": "USA_86T88",
+          "weight": 12.4534
+        },
+        {
+          "source": "USA_26",
+          "target": "MYS_26",
+          "weight": 6.0200443
+        },
+        {
+          "source": "USA_26",
+          "target": "TWN_26",
+          "weight": 8.530214
+        },
+        {
+          "source": "USA_26",
+          "target": "MX2_26",
+          "weight": 10.186828
+        },
+        {
+          "source": "USA_26",
+          "target": "CN1_26",
+          "weight": 14.701356
+        },
+        {
+          "source": "USA_26",
+          "target": "CN2_26",
+          "weight": 7.542427
+        }
+      ]
+    }
+  ],
+  "tables": [
+    [],
+    []
+  ],
+  "country_groups": [["USA", "CN1"]],
+  "group_all_industries": true,
+  "filters": {
+    "industries": ["01T02", "09"],
+    "countries": [],
+    "limit_largest_shocks": 10
+  }
+}
