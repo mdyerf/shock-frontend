@@ -9,9 +9,9 @@ async function Page({ params }: IPageProps) {
   const { id } = await params;
 
   const { graphs } = await getDiffusionGraph(id);
-  const { sorted_log } = await getDiffusionTable(id);
+  const res = await getDiffusionTable(id);
 
-  return <DiffusionDisplay graphs={graphs} tables={sorted_log} />;
+  return <DiffusionDisplay graphs={graphs} table={res} />;
 }
 
 export default Page;
