@@ -83,13 +83,10 @@ interface IProps {
     nodes: { id: string }[];
     edges: { source: string; target: string; weight: number }[];
   }[];
-  tables: {
-    iteration: number;
-    rows: IterationRow[];
-  }[];
+  table: IterationRow[];
 }
 
-const DiffusionDisplay: FC<IProps> = ({ graphs, tables }) => {
+const DiffusionDisplay: FC<IProps> = ({ graphs, table }) => {
   const cyRef = useRef<Core | null>(null);
 
   const [iteration, setIteration] = useState(0);
@@ -110,11 +107,6 @@ const DiffusionDisplay: FC<IProps> = ({ graphs, tables }) => {
           ]
         : [],
     [graphs, iteration]
-  );
-
-  const rows = useMemo(
-    () => (tables?.length ? tables[iteration].rows : []),
-    [tables, iteration]
   );
 
   useEffect(() => {
@@ -158,28 +150,32 @@ const DiffusionDisplay: FC<IProps> = ({ graphs, tables }) => {
             Refetch
           </Button>
         </Stack>
-        <Stack
-          direction="row"
-          gap={1}
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <IconButton onClick={() => setIteration((it) => Math.max(it - 1, 0))}>
-            <ChevronLeftIcon />
-          </IconButton>
-          <LinearProgress
-            variant="determinate"
-            value={((iteration + 1) * 100) / graphs.length}
-            sx={{ width: "100%" }}
-          />
-          <IconButton
-            onClick={() =>
-              setIteration((it) => Math.min(it + 1, graphs.length - 1))
-            }
+        {display === "graph" && (
+          <Stack
+            direction="row"
+            gap={1}
+            alignItems="center"
+            justifyContent="space-between"
           >
-            <ChevronRightIcon />
-          </IconButton>
-        </Stack>
+            <IconButton
+              onClick={() => setIteration((it) => Math.max(it - 1, 0))}
+            >
+              <ChevronLeftIcon />
+            </IconButton>
+            <LinearProgress
+              variant="determinate"
+              value={((iteration + 1) * 100) / graphs.length}
+              sx={{ width: "100%" }}
+            />
+            <IconButton
+              onClick={() =>
+                setIteration((it) => Math.min(it + 1, graphs.length - 1))
+              }
+            >
+              <ChevronRightIcon />
+            </IconButton>
+          </Stack>
+        )}
 
         <Box flex={1}>
           {display === "graph" && (
@@ -197,7 +193,7 @@ const DiffusionDisplay: FC<IProps> = ({ graphs, tables }) => {
               }}
             />
           )}
-          {display === "table" && <NodesGrid rows={rows} />}
+          {display === "table" && <NodesGrid rows={table} />}
         </Box>
       </Stack>
     </>
