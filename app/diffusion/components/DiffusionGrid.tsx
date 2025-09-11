@@ -36,7 +36,7 @@ function DiffusionGrid() {
       <InputModal
         open={modalOpen !== null}
         text="Diffusion Info"
-        submitText="View Graph"
+        submitText="Display"
         onSubmit={() => navigate.push(`/diffusion/${modalOpen}`)}
         closeText="Close"
         onClose={() => setModalOpen(null)}

@@ -13,11 +13,12 @@ import MemoryIcon from "@mui/icons-material/Memory";
 import { Shock } from "@/app/types";
 import ShockForm from "./ShockForm";
 import ShocksBadges from "./ShocksBadges";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import SelectInput from "@/app/components/SelectInput";
 import api from "@/app/api";
 import { getShocksObject } from "../utils/converter";
 import { useRouter } from "next/navigation";
+import { getCountriesIndustries } from "../services/iterations";
 
 type IFormData = {
   name: string;
@@ -34,14 +35,20 @@ function DiffusionForm() {
   const [shocks, setShocks] = useState<Shock[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const [countries, setCountries] = useState<{ id: string; name: string }[]>([]);
+  const [industries, setIndustries] = useState<{ id: string; name: string }[]>(
+    []
+  );
+
   const processDisabled = useMemo(() => !shocks.length, [shocks]);
 
   const {
     register,
     handleSubmit,
     getValues,
+    control,
     formState: { errors },
-  } = useForm<IFormData>();
+  } = useForm<IFormData>({ defaultValues: { integration: '' }});
 
   const handleAddShock = useCallback(
     (shock: Omit<Shock, "id">) =>
@@ -64,6 +71,12 @@ function DiffusionForm() {
     router.push("/diffusion");
   }, [shocks, getValues, router]);
 
+  const handleIntegrationChange = useCallback(async (integration: string) => {
+    const data = await getCountriesIndustries(integration);
+    setCountries(data.countries);
+    setIndustries(data.industries);
+  }, []);
+
   return (
     <Box>
       <Stack
@@ -82,12 +95,22 @@ function DiffusionForm() {
         />
         <Stack direction="row" spacing={1} alignItems="center">
           <Typography variant="body1">Base Integration:</Typography>
-          <SelectInput
-            {...register("integration", { required: true })}
-            label="Base Integration"
-            defaultValue=""
-            items={[{ id: 1, name: "2018" }]}
-            error={!!errors.integration?.type}
+          <Controller
+            control={control}
+            name="integration"
+            rules={{ required: true }}
+            render={({ field }) => (
+              <SelectInput
+                {...field}
+                label="Base Integration"
+                items={[{ id: "2018", name: "2018" }]}
+                error={!!errors.integration?.type}
+                onChange={(e) => {
+                  field.onChange(e);
+                  handleIntegrationChange(e.target.value as string);
+                }}
+              />
+            )}
           />
         </Stack>
         <Button
@@ -155,11 +178,8 @@ function DiffusionForm() {
         </Stack>
 
         <ShockForm
-          countries={[
-            { id: "US", name: "United States" },
-            { id: "CN1", name: "China" },
-          ]}
-          industries={[{ id: "26", name: "Computer & Electronics" }]}
+          countries={countries}
+          industries={industries}
           onSubmit={(data) => handleAddShock(data as Shock)}
         />
 
