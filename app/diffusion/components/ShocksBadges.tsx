@@ -10,7 +10,7 @@ interface Props {
 function ShocksBadges({ shocks, onDelete }: Props) {
   return (
     <Stack width={300} gap={1}>
-      <Typography variant="body1">Shocks:</Typography>
+      <Typography variant="body1">Shocks directions:</Typography>
       <Box display="flex" flexDirection="row" flexWrap="wrap" gap={1} m={1}>
         {shocks.map(
           ({
