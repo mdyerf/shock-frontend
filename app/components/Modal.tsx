@@ -31,15 +31,20 @@ function InputModal({
   text,
   onClose,
   onSubmit,
-  submitText = 'Submit',
-  closeText = 'Cancel',
+  submitText = "Submit",
+  closeText = "Cancel",
   children,
 }: InputModalProps) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style} display="flex" flexDirection="column" gap={1}>
         <Typography variant="h6">{text}</Typography>
-        <form onSubmit={onSubmit}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit?.(e);
+          }}
+        >
           <Box display="flex" flexDirection="column" gap={2} my={1}>
             {children}
           </Box>
