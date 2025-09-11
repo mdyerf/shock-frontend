@@ -72,7 +72,7 @@ export default function DiffusionInfo({ id }: IProps) {
       </Typography>
 
       <Box my={1} p={1} bgcolor="black">
-        <code>logs: {JSON.stringify(data.logs)}</code>
+        <code style={{ color: 'white' }}>logs: {JSON.stringify(data.logs)}</code>
       </Box>
     </Box>
   );
