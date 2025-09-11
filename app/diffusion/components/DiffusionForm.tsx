@@ -86,7 +86,7 @@ function DiffusionForm() {
             {...register("integration", { required: true })}
             label="Base Integration"
             defaultValue=""
-            items={[{ id: "2018", name: "2018" }]}
+            items={[{ id: 1, name: "2018" }]}
             error={!!errors.integration?.type}
           />
         </Stack>
@@ -160,7 +160,7 @@ function DiffusionForm() {
             { id: "CN1", name: "China" },
           ]}
           industries={[{ id: "26", name: "Computer & Electronics" }]}
-          onSubmit={handleAddShock}
+          onSubmit={(data) => handleAddShock(data as Shock)}
         />
 
         <ShocksBadges shocks={shocks} onDelete={handleDeleteShock} />

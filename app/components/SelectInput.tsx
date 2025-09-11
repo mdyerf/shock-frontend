@@ -16,6 +16,9 @@ function SelectInput({ label, items, ...props }: SelectInputProps) {
     <FormControl sx={{ minWidth: 200 }}>
       <InputLabel id={`select-label-${label}`}>{label}</InputLabel>
       <Select labelId={`select-label-${label}`} {...props}>
+        <MenuItem value="">
+          <em>--None--</em>
+        </MenuItem>
         {items.map(({ id, name }) => (
           <MenuItem key={id} value={id}>
             {name}

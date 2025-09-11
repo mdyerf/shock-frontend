@@ -1,7 +1,5 @@
 import {
-  Box,
   Button,
-  ButtonGroup,
   Checkbox,
   FormControl,
   MenuItem,
@@ -12,29 +10,57 @@ import {
 } from "@mui/material";
 import { Add, Percent } from "@mui/icons-material";
 import SelectInput from "@/app/components/SelectInput";
-import { Integration, Shock } from "@/app/types";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
+import { Integration } from "@/app/types";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 interface ShockFormProps {
   countries: Integration["countries"];
   industries: Integration["industries"];
-  onSubmit: SubmitHandler<Omit<Shock, "id">>;
+  onSubmit: SubmitHandler<IFormData>;
 }
 
-type IFormData = Omit<Shock, "shockType" | "id">;
+type IFormData = {
+  demanderCountry: string | null;
+  demanderIndustry: string | null;
+  supplierCountry: string | null;
+  supplierIndustry: string | null;
+  value: number | null;
+  sign: "positive" | "negative";
+  percentage: boolean;
+  shockType: "in" | "out";
+};
 
 function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
-  const [shockType, setShockType] = useState<Shock["shockType"]>("in");
-
   const {
+    control,
     register,
+    reset,
     handleSubmit: submit,
     formState: { errors },
-  } = useForm<IFormData>();
+  } = useForm<IFormData>({
+    defaultValues: {
+      demanderCountry: null,
+      demanderIndustry: null,
+      supplierCountry: null,
+      supplierIndustry: null,
+      value: null,
+      sign: "positive",
+      percentage: true,
+      shockType: "in",
+    },
+  });
 
-  const handleSubmit: SubmitHandler<IFormData> = (data) =>
-    onSubmit({ ...data, shockType });
+  const handleSubmit: SubmitHandler<IFormData> = (data) => {
+    onSubmit(data);
+    reset({
+      ...data,
+      demanderCountry: null,
+      demanderIndustry: null,
+      supplierCountry: null,
+      supplierIndustry: null,
+      value: null,
+    });
+  };
 
   return (
     <form onSubmit={submit(handleSubmit)}>
@@ -42,40 +68,74 @@ function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
         <Typography variant="h6" textAlign="center">
           Define a New Shock
         </Typography>
+
+        {/* Demander */}
         <Typography variant="body1">Demander</Typography>
         <Stack direction="row" gap={1}>
-          <SelectInput
-            {...register("demanderCountry", { required: true })}
-            defaultValue=""
-            label="Demander Country"
-            items={countries}
-            error={!!errors.demanderCountry?.type}
+          <Controller
+            name="demanderCountry"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <SelectInput
+                {...field}
+                label="Demander Country"
+                items={countries}
+                value={field.value ?? ""}
+                error={!!errors.demanderCountry}
+              />
+            )}
           />
-          <SelectInput
-            {...register("demanderIndustry", { required: true })}
-            defaultValue=""
-            label="Demander Industry"
-            items={industries}
-            error={!!errors.demanderIndustry?.type}
+          <Controller
+            name="demanderIndustry"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <SelectInput
+                {...field}
+                label="Demander Industry"
+                items={industries}
+                value={field.value ?? ""}
+                error={!!errors.demanderIndustry}
+              />
+            )}
           />
         </Stack>
+
+        {/* Supplier */}
         <Typography variant="body1">Supplier</Typography>
         <Stack direction="row" gap={1}>
-          <SelectInput
-            {...register("supplierCountry", { required: true })}
-            defaultValue=""
-            label="Supplier Country"
-            items={countries}
-            error={!!errors.supplierCountry?.type}
+          <Controller
+            name="supplierCountry"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <SelectInput
+                {...field}
+                label="Supplier Country"
+                items={countries}
+                value={field.value ?? ""}
+                error={!!errors.supplierCountry}
+              />
+            )}
           />
-          <SelectInput
-            {...register("supplierIndustry", { required: true })}
-            defaultValue=""
-            label="Supplier Industry"
-            items={industries}
-            error={!!errors.supplierIndustry?.type}
+          <Controller
+            name="supplierIndustry"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <SelectInput
+                {...field}
+                label="Supplier Industry"
+                items={industries}
+                value={field.value ?? ""}
+                error={!!errors.supplierIndustry}
+              />
+            )}
           />
         </Stack>
+
+        {/* Shock Value */}
         <Typography variant="body1">Shock Value</Typography>
         <Stack direction="row" alignItems="center" gap={1}>
           <FormControl>
@@ -96,13 +156,23 @@ function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
               </MenuItem>
             </Select>
           </FormControl>
-          <TextField
-            {...register("value", { required: true })}
-            type="number"
-            label="Value"
-            sx={{ maxWidth: 200 }}
-            error={!!errors.value?.type}
+
+          <Controller
+            name="value"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                type="number"
+                label="Value"
+                sx={{ maxWidth: 200 }}
+                value={field.value ?? ""}
+                error={!!errors.value}
+              />
+            )}
           />
+
           <Stack direction="row">
             <Checkbox
               sx={{ p: 0 }}
@@ -113,36 +183,33 @@ function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
             <Percent color="primary" />
           </Stack>
         </Stack>
-        <Stack direction="row" gap={1} alignItems="flex-end">
-          <Stack gap={1}>
-            <Typography variant="body1">Shock Type</Typography>
-            <ButtonGroup sx={{ width: 200 }}>
-              <Button
-                fullWidth
-                variant={shockType === "in" ? "contained" : "outlined"}
-                onClick={() => setShockType("in")}
-              >
-                Input
-              </Button>
-              <Button
-                fullWidth
-                variant={shockType === "out" ? "contained" : "outlined"}
-                onClick={() => setShockType("out")}
-              >
-                Output
-              </Button>
-            </ButtonGroup>
+
+        <Stack direction="row" gap={2} alignItems="flex-end">
+          <Stack flex={1} gap={1}>
+            <Typography variant="body1">Shock Origin</Typography>
+            <Controller
+              name="shockType"
+              control={control}
+              render={({ field }) => (
+                <FormControl sx={{ minWidth: 200 }}>
+                  <Select {...field}>
+                    <MenuItem value="in">Demander</MenuItem>
+                    <MenuItem value="out">Supplier</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+            />
           </Stack>
-          <Box sx={{ minWidth: 200 }} display="flex" justifyContent="flex-end">
-            <Button
-              startIcon={<Add />}
-              color="primary"
-              variant="contained"
-              type="submit"
-            >
-              Add Shock
-            </Button>
-          </Box>
+
+          <Button
+            startIcon={<Add />}
+            color="primary"
+            variant="contained"
+            type="submit"
+            sx={{ alignSelf: "flex-end" }}
+          >
+            Add Shock
+          </Button>
         </Stack>
       </Stack>
     </form>
