@@ -27,7 +27,7 @@ function ShocksBadges({ shocks, onDelete }: Props) {
             <Box key={id} border={1} borderRadius={10} px={2} py={1}>
               <Stack direction="row" flexWrap="wrap" gap={1}>
                 <Typography variant="body1">
-                  {demanderCountry}_{demanderIndustry}
+                  Demander: {demanderCountry}_{demanderIndustry}
                 </Typography>
                 {shockType === "in" ? (
                   <ArrowForward color="primary" />
@@ -35,7 +35,7 @@ function ShocksBadges({ shocks, onDelete }: Props) {
                   <ArrowBack color="secondary" />
                 )}
                 <Typography variant="body1">
-                  {supplierCountry}_{supplierIndustry}
+                  Supplier: {supplierCountry}_{supplierIndustry}
                 </Typography>
                 <Typography
                   variant="body1"

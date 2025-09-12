@@ -15,12 +15,12 @@ export const getShocksObject = (shocks: Shock[]): IShockObject => {
     shock_amounts: [],
   };
 
-  shocks.forEach((shock) => {
-    result.sources.push(`${shock.supplierCountry}_${shock.supplierIndustry}`);
-    result.destinations.push(
-      `${shock.demanderCountry}_${shock.demanderIndustry}`
-    );
-    result.shock_types.push(shock.shockType);
+  shocks.forEach(({shockType, ...shock}) => {
+    const supplier = `${shock.supplierCountry}_${shock.supplierIndustry}`;
+    const demander = `${shock.demanderCountry}_${shock.demanderIndustry}`;
+    result.sources.push(shockType === 'in' ? supplier : demander);
+    result.destinations.push(shockType === 'in' ? demander : supplier);
+    result.shock_types.push(shockType);
     result.shock_amounts.push(
       `${shock.sign === "positive" ? "" : "-"}${shock.value}${shock.percentage ? "%" : ""}`
     );
