@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -29,16 +29,18 @@ type IFormData = {
   threshold_three: number;
 };
 
-function DiffusionForm() {
+interface IProps {
+  integrations: { id: string; name: string }[];
+}
+
+const DiffusionForm: FC<IProps> = ({ integrations }) => {
   const router = useRouter();
 
   const [shocks, setShocks] = useState<Shock[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const [countries, setCountries] = useState<{ id: string; name: string }[]>([]);
-  const [industries, setIndustries] = useState<{ id: string; name: string }[]>(
-    []
-  );
+  const [countries, setCountries] = useState<string[]>([]);
+  const [industries, setIndustries] = useState<string[]>([]);
 
   const processDisabled = useMemo(() => !shocks.length, [shocks]);
 
@@ -48,7 +50,7 @@ function DiffusionForm() {
     getValues,
     control,
     formState: { errors },
-  } = useForm<IFormData>({ defaultValues: { integration: '' }});
+  } = useForm<IFormData>({ defaultValues: { integration: "" } });
 
   const handleAddShock = useCallback(
     (shock: Omit<Shock, "id">) =>
@@ -103,7 +105,7 @@ function DiffusionForm() {
               <SelectInput
                 {...field}
                 label="Base Integration"
-                items={[{ id: "2018", name: "2018" }]}
+                items={integrations}
                 error={!!errors.integration?.type}
                 onChange={(e) => {
                   field.onChange(e);
@@ -178,8 +180,8 @@ function DiffusionForm() {
         </Stack>
 
         <ShockForm
-          countries={countries}
-          industries={industries}
+          countries={countries.map((c) => ({ id: c, name: c }))}
+          industries={industries.map((i) => ({ id: i, name: i }))}
           onSubmit={(data) => handleAddShock(data as Shock)}
         />
 

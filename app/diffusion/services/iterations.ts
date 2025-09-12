@@ -1,5 +1,10 @@
 import api from "@/app/api";
 
+export const getDatasets = () =>
+  api.get("/datasets").then((res) => res.data) as Promise<
+    { id: string; name: string }[]
+  >;
+
 export const getDiffusionGraph = (id: string) =>
   api
     .post(`/diffusions/${id}/iterations/`, {
@@ -16,23 +21,8 @@ export const getDiffusionTable = (
     .get(`/diffusions/${id}/iterations/?sort_by=${sortBy}&sort_order=${order}`)
     .then((res) => res.data);
 
-export const getCountriesIndustries = async (integration: string) => {
-  return new Promise<{ countries: { id: string; name: string }[]; industries: { id: string; name: string }[] }>(
-    (resolve) => {
-      setTimeout(() => {
-        resolve({
-          countries: [
-            { id: "US", name: "United States" },
-            { id: "CN", name: "China" },
-            { id: "DE", name: "Germany" },
-          ],
-          industries: [
-            { id: "26", name: "Computer & Electronics" },
-            { id: "10", name: "Agriculture" },
-            { id: "20", name: "Manufacturing" },
-          ],
-        });
-      }, 500); // simulate latency
-    }
-  );
-};
+export const getCountriesIndustries = async (integration: string) =>
+  api.get(`/datasets/meta/${integration}`).then((res) => res.data) as Promise<{
+    countries: string[];
+    industries: string[];
+  }>;
