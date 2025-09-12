@@ -12,65 +12,19 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { IterationRow } from "@/app/types";
+import InputModal from "@/app/components/Modal";
+import CytoscapeComponent from "react-cytoscapejs";
 
 interface IProps {
   rows: IterationRow[];
 }
 
-const columns: GridColDef[] = [
-  { field: "Iteration", headerName: "Iteration", flex: 1 },
-  { field: "id", headerName: "Row Id", flex: 1 },
-  {
-    field: "shockId",
-    headerName: "Shock Id",
-    flex: 1,
-    renderCell: (params) => (
-      <Typography
-        sx={{
-          color: "primary.main",
-          textDecoration: "underline",
-          cursor: "pointer",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        {params.value}
-      </Typography>
-    ),
-  },
-  {
-    field: "parentId",
-    headerName: "Parents Ids",
-    flex: 1,
-    renderCell: (params) => (
-      <Typography
-        sx={{
-          color: "primary.main",
-          textDecoration: "underline",
-          cursor: "pointer",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        {params.value}
-      </Typography>
-    ),
-  },
-  { field: "source", headerName: "Source", flex: 1 },
-  { field: "destination", headerName: "Destination", flex: 1 },
-  { field: "shockType", headerName: "Shock Type", flex: 1 },
-  { field: "value", headerName: "Shock Value", flex: 1 },
-  { field: "comment", headerName: "Comment", flex: 1 },
-];
-
 const NodesGrid: FC<IProps> = ({ rows }) => {
   const apiRef = useGridApiRef();
 
-  const [filterModel, setFilterModel] = useState({
-    items: [] as any[],
-  });
+  const [filterModel, setFilterModel] = useState({ items: [] as any[] });
+  const [modalOpen, setModalOpen] = useState(false);
+  const [graphElements, setGraphElements] = useState<any[]>([]);
 
   const handleCellClick: GridEventListener<"cellClick"> = useCallback(
     (params) => {
@@ -115,21 +69,121 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
       type: "array",
       bookType: "xlsx",
     });
-    const blob = new Blob([excelBuffer], {
-      type: "application/octet-stream",
-    });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(blob, "nodes_export.xlsx");
   }, [apiRef]);
+
+  const buildGraphElements = useCallback(
+    (row: IterationRow) => {
+      const elements: { data: any }[] = [];
+      const addedNodes = new Set<string>();
+
+      const addNodeAndParents = (currentRow: IterationRow) => {
+        if (addedNodes.has(currentRow.shockId)) return;
+
+        elements.push({
+          data: { id: currentRow.shockId, label: currentRow.shockId },
+        });
+        addedNodes.add(currentRow.shockId);
+
+        const parentIds: string[] = Array.isArray(currentRow.parentId)
+          ? currentRow.parentId
+          : currentRow.parentId
+            ? [currentRow.parentId]
+            : [];
+
+        parentIds.forEach((parentId) => {
+          const parentRow = rows.find((r) => r.shockId === parentId);
+          if (!parentRow) return;
+
+          elements.push({
+            data: {
+              source: parentRow.shockId,
+              target: currentRow.shockId,
+              label: "parent",
+            },
+          });
+
+          addNodeAndParents(parentRow);
+        });
+      };
+
+      addNodeAndParents(row);
+
+      setGraphElements(elements);
+      setModalOpen(true);
+    },
+    [rows]
+  );
+
+  const columns: GridColDef[] = [
+    { field: "Iteration", headerName: "Iteration", flex: 1 },
+    { field: "id", headerName: "Row Id", flex: 1 },
+    {
+      field: "shockId",
+      headerName: "Shock Id",
+      flex: 1,
+      renderCell: (params) => (
+        <Typography
+          sx={{
+            color: "primary.main",
+            textDecoration: "underline",
+            cursor: "pointer",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {params.value}
+        </Typography>
+      ),
+    },
+    {
+      field: "parentId",
+      headerName: "Parents Ids",
+      flex: 1,
+      renderCell: (params) => (
+        <Typography
+          sx={{
+            color: "primary.main",
+            textDecoration: "underline",
+            cursor: "pointer",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {params.value}
+        </Typography>
+      ),
+    },
+    { field: "source", headerName: "Source", flex: 1 },
+    { field: "destination", headerName: "Destination", flex: 1 },
+    { field: "shockType", headerName: "Shock Type", flex: 1 },
+    { field: "value", headerName: "Shock Value", flex: 1 },
+    { field: "comment", headerName: "Comment", flex: 1 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 1,
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => buildGraphElements(params.row)}
+        >
+          View History
+        </Button>
+      ),
+    },
+  ];
 
   return (
     <Box>
       <Stack direction="row" justifyContent="flex-end" mb={1}>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          onClick={handleExport}
-        >
+        <Button variant="contained" size="small" onClick={handleExport}>
           Export to Excel
         </Button>
       </Stack>
@@ -144,6 +198,34 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
           onCellClick={handleCellClick}
         />
       </Box>
+
+      <InputModal
+        open={modalOpen}
+        text="View Node History"
+        onClose={() => setModalOpen(false)}
+      >
+        <Box sx={{ width: "600px", height: "400px" }}>
+          <CytoscapeComponent
+            elements={graphElements}
+            style={{ width: "100%", height: "100%" }}
+            layout={{ name: "breadthfirst" }}
+            stylesheet={[
+              {
+                selector: "node",
+                style: { label: "data(label)", "text-valign": "center" },
+              },
+              {
+                selector: "edge",
+                style: {
+                  label: "data(label)",
+                  "curve-style": "bezier",
+                  "target-arrow-shape": "triangle",
+                },
+              },
+            ]}
+          />
+        </Box>
+      </InputModal>
     </Box>
   );
 };
