@@ -1,23 +1,25 @@
-import { IterationRow } from "@/app/types";
-import { Box, Typography } from "@mui/material";
-import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
+"use client";
+
 import { FC, useCallback, useState } from "react";
+import {
+  DataGrid,
+  GridColDef,
+  GridEventListener,
+  gridFilteredSortedRowEntriesSelector,
+  useGridApiRef,
+} from "@mui/x-data-grid";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { IterationRow } from "@/app/types";
 
 interface IProps {
   rows: IterationRow[];
 }
 
 const columns: GridColDef[] = [
-  {
-    field: "Iteration",
-    headerName: "Iteration",
-    flex: 1,
-  },
-  {
-    field: "id",
-    headerName: "Row Id",
-    flex: 1,
-  },
+  { field: "Iteration", headerName: "Iteration", flex: 1 },
+  { field: "id", headerName: "Row Id", flex: 1 },
   {
     field: "shockId",
     headerName: "Shock Id",
@@ -56,34 +58,16 @@ const columns: GridColDef[] = [
       </Typography>
     ),
   },
-  {
-    field: "source",
-    headerName: "Source",
-    flex: 1,
-  },
-  {
-    field: "destination",
-    headerName: "Destination",
-    flex: 1,
-  },
-  {
-    field: "shockType",
-    headerName: "Shock Type",
-    flex: 1,
-  },
-  {
-    field: "value",
-    headerName: "Shock Value",
-    flex: 1,
-  },
-  {
-    field: "comment",
-    headerName: "Comment",
-    flex: 1,
-  },
+  { field: "source", headerName: "Source", flex: 1 },
+  { field: "destination", headerName: "Destination", flex: 1 },
+  { field: "shockType", headerName: "Shock Type", flex: 1 },
+  { field: "value", headerName: "Shock Value", flex: 1 },
+  { field: "comment", headerName: "Comment", flex: 1 },
 ];
 
 const NodesGrid: FC<IProps> = ({ rows }) => {
+  const apiRef = useGridApiRef();
+
   const [filterModel, setFilterModel] = useState({
     items: [] as any[],
   });
@@ -119,15 +103,47 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
     []
   );
 
+  const handleExport = useCallback(() => {
+    const visibleRows = gridFilteredSortedRowEntriesSelector(apiRef);
+    const data = visibleRows.map((row) => row.model);
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Nodes");
+
+    const excelBuffer = XLSX.write(workbook, {
+      type: "array",
+      bookType: "xlsx",
+    });
+    const blob = new Blob([excelBuffer], {
+      type: "application/octet-stream",
+    });
+    saveAs(blob, "nodes_export.xlsx");
+  }, [apiRef]);
+
   return (
-    <Box height={450}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        filterModel={filterModel}
-        onFilterModelChange={setFilterModel}
-        onCellClick={handleCellClick}
-      />
+    <Box>
+      <Stack direction="row" justifyContent="flex-end" mb={1}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={handleExport}
+        >
+          Export to Excel
+        </Button>
+      </Stack>
+
+      <Box height={450}>
+        <DataGrid
+          apiRef={apiRef}
+          rows={rows}
+          columns={columns}
+          filterModel={filterModel}
+          onFilterModelChange={setFilterModel}
+          onCellClick={handleCellClick}
+        />
+      </Box>
     </Box>
   );
 };
