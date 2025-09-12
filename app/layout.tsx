@@ -7,14 +7,10 @@ import { DashboardLayout, PageContainer } from "@toolpad/core";
 import theme from "../theme";
 import AppHeader from "./components/AppHeader";
 import QueryProvider from "./components/QueryProvider";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute"; // 👈 import
 
 const NAVIGATION: Navigation = [
-  // {
-  //   title: "Integration",
-  //   segment: "integration",
-  //   pattern: "integration/:id?",
-  //   icon: <PivotTableChartIcon />,
-  // },
   {
     title: "Diffusion",
     segment: "diffusion",
@@ -30,19 +26,23 @@ export default async function RootLayout({
     <html lang="en" data-toolpad-color-scheme="dark">
       <body>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <QueryProvider>
-            <AppProvider theme={theme} navigation={NAVIGATION}>
-              <DashboardLayout
-                slots={{
-                  appTitle: AppHeader,
-                }}
-              >
-                <PageContainer title="" breadcrumbs={[]}>
-                  {children}
-                </PageContainer>
-              </DashboardLayout>
-            </AppProvider>
-          </QueryProvider>
+          <AuthProvider>
+            <ProtectedRoute>
+              <QueryProvider>
+                <AppProvider theme={theme} navigation={NAVIGATION}>
+                  <DashboardLayout
+                    slots={{
+                      appTitle: AppHeader,
+                    }}
+                  >
+                    <PageContainer title="" breadcrumbs={[]}>
+                      {children}
+                    </PageContainer>
+                  </DashboardLayout>
+                </AppProvider>
+              </QueryProvider>
+            </ProtectedRoute>
+          </AuthProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
