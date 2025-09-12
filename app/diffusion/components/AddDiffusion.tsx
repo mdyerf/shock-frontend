@@ -21,7 +21,7 @@ function AddDiffusion() {
 
   const { data: integrations } = useQuery({
     queryKey: ['integrations'],
-    queryFn: () => [{ id: '2018', name: '2018'}]
+    queryFn: () => [{ id: 1, name: '2018'}]
   })
 
   const {
