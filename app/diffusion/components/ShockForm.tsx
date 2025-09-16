@@ -69,39 +69,6 @@ function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
           Define a New Shock
         </Typography>
 
-        {/* Demander */}
-        <Typography variant="body1">Demander</Typography>
-        <Stack direction="row" gap={1}>
-          <Controller
-            name="demanderCountry"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <SelectInput
-                {...field}
-                label="Demander Country"
-                items={countries}
-                value={field.value ?? ""}
-                error={!!errors.demanderCountry}
-              />
-            )}
-          />
-          <Controller
-            name="demanderIndustry"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <SelectInput
-                {...field}
-                label="Demander Industry"
-                items={industries}
-                value={field.value ?? ""}
-                error={!!errors.demanderIndustry}
-              />
-            )}
-          />
-        </Stack>
-
         {/* Supplier */}
         <Typography variant="body1">Supplier</Typography>
         <Stack direction="row" gap={1}>
@@ -112,7 +79,7 @@ function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
             render={({ field }) => (
               <SelectInput
                 {...field}
-                label="Supplier Country"
+                label="Country"
                 items={countries}
                 value={field.value ?? ""}
                 error={!!errors.supplierCountry}
@@ -126,10 +93,43 @@ function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
             render={({ field }) => (
               <SelectInput
                 {...field}
-                label="Supplier Industry"
+                label="Industry"
                 items={industries}
                 value={field.value ?? ""}
                 error={!!errors.supplierIndustry}
+              />
+            )}
+          />
+        </Stack>
+
+        {/* Demander */}
+        <Typography variant="body1">Demander</Typography>
+        <Stack direction="row" gap={1}>
+          <Controller
+            name="demanderCountry"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <SelectInput
+                {...field}
+                label="Country"
+                items={countries}
+                value={field.value ?? ""}
+                error={!!errors.demanderCountry}
+              />
+            )}
+          />
+          <Controller
+            name="demanderIndustry"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <SelectInput
+                {...field}
+                label="Industry"
+                items={industries}
+                value={field.value ?? ""}
+                error={!!errors.demanderIndustry}
               />
             )}
           />
@@ -193,8 +193,8 @@ function ShockForm({ countries, industries, onSubmit }: ShockFormProps) {
               render={({ field }) => (
                 <FormControl sx={{ minWidth: 200 }}>
                   <Select {...field}>
-                    <MenuItem value="in">Demander</MenuItem>
-                    <MenuItem value="out">Supplier</MenuItem>
+                    <MenuItem value="out">Demander</MenuItem>
+                    <MenuItem value="in">Supplier</MenuItem>
                   </Select>
                 </FormControl>
               )}
