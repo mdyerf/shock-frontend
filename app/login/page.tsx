@@ -27,7 +27,7 @@ export default function LoginPage() {
     try {
       await login(username, password);
       setAuthenticated(true);
-      router.push("/"); // redirect to home/dashboard
+      router.push("/diffusion"); // redirect to home/dashboard
     } catch {
       setError("Invalid username or password");
     }

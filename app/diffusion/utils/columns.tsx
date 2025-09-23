@@ -41,7 +41,7 @@ export const getGridColumns = (
   },
   {
     field: "integration",
-    headerName: "Integration",
+    headerName: "Dataset",
     flex: 1,
   },
   {

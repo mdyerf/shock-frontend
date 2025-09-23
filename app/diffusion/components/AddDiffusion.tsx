@@ -55,7 +55,7 @@ function AddDiffusion() {
         />
         <SelectInput
           {...register("integrationId", { required: true })}
-          label="Base Integration"
+          label="Base dataset"
           defaultValue=""
           items={integrations ?? []}
           error={!!errors.integrationId?.type}

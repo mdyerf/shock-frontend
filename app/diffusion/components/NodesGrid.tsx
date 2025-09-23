@@ -117,50 +117,34 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
   );
 
   const columns: GridColDef[] = [
-    { field: "Iteration", headerName: "Iteration", flex: 1 },
-    { field: "id", headerName: "Row Id", flex: 1 },
+    { field: "Iteration", headerName: "Iteration", flex: 0.75 },
+    { field: "id", headerName: "Row Id", flex: 0.75 },
     {
       field: "shockId",
       headerName: "Shock Id",
-      flex: 1,
+      flex: 1.5,
       renderCell: (params) => (
-        <Typography
-          sx={{
-            color: "primary.main",
-            textDecoration: "underline",
-            cursor: "pointer",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          {params.value}
-        </Typography>
+        <Stack direction="row" gap={1} alignItems="center">
+          <Typography>{params.value}</Typography>
+          <Button variant="outlined">View Children</Button>
+        </Stack>
       ),
     },
     {
       field: "parentId",
       headerName: "Parents Ids",
-      flex: 1,
+      flex: 1.5,
       renderCell: (params) => (
-        <Typography
-          sx={{
-            color: "primary.main",
-            textDecoration: "underline",
-            cursor: "pointer",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          {params.value}
-        </Typography>
+        <Stack direction="row" gap={1} alignItems="center">
+          <Typography>{params.value}</Typography>
+          <Button variant="outlined">View Parents</Button>
+        </Stack>
       ),
     },
     { field: "source", headerName: "Source", flex: 1 },
     { field: "destination", headerName: "Destination", flex: 1 },
-    { field: "shockType", headerName: "Shock Type", flex: 1 },
-    { field: "value", headerName: "Shock Value", flex: 1 },
+    { field: "shockType", headerName: "Shock Type", flex: 0.75 },
+    { field: "value", headerName: "Shock Value", flex: 0.75 },
     { field: "comment", headerName: "Comment", flex: 1 },
     {
       field: "actions",

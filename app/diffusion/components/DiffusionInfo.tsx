@@ -37,7 +37,7 @@ export default function DiffusionInfo({ id }: IProps) {
       >
         <Typography variant="h5">{data.name}</Typography>
         <StatusChip status={data.status} />
-        <Typography variant="body1">Data: {data.integration}</Typography>
+        <Typography variant="body1">Dataset: {data.integration}</Typography>
       </Stack>
 
       <Stack direction="row" flexWrap="wrap" gap={1} py={1} my={1}>

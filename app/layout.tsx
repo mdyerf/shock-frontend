@@ -14,7 +14,7 @@ const NAVIGATION: Navigation = [
   {
     title: "Diffusion",
     segment: "diffusion",
-    pattern: "diffusion/:id?",
+    pattern: "diffusion",
     icon: <AccountTreeIcon />,
   },
 ];
