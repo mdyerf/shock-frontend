@@ -8,7 +8,7 @@ async function Page() {
   return (
     <>
       <Stack direction="row" justifyContent="space-between" mb={2}>
-        <Typography variant="h4">Integrations</Typography>
+        <Typography variant="h4">Datasets</Typography>
         <AddIntegration integrations={rows} />
       </Stack>
       <IntegrationGrid rows={rows} />

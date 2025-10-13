@@ -8,12 +8,20 @@ import {
   gridFilteredSortedRowEntriesSelector,
   useGridApiRef,
 } from "@mui/x-data-grid";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { IterationRow } from "@/app/types";
 import InputModal from "@/app/components/Modal";
-import CytoscapeComponent from "react-cytoscapejs";
 
 interface IProps {
   rows: IterationRow[];
@@ -24,7 +32,7 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
 
   const [filterModel, setFilterModel] = useState({ items: [] as any[] });
   const [modalOpen, setModalOpen] = useState(false);
-  const [graphElements, setGraphElements] = useState<any[]>([]);
+  const [selectedRow, setSelectedRow] = useState<IterationRow | null>(null);
 
   const handleCellClick: GridEventListener<"cellClick"> = useCallback(
     (params) => {
@@ -73,48 +81,47 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
     saveAs(blob, "nodes_export.xlsx");
   }, [apiRef]);
 
-  const buildGraphElements = useCallback(
-    (row: IterationRow) => {
-      const elements: { data: any }[] = [];
-      const addedNodes = new Set<string>();
+  const renderAccordion = (row: IterationRow) => {
+    if (!row) return null;
 
-      const addNodeAndParents = (currentRow: IterationRow) => {
-        if (addedNodes.has(currentRow.shockId)) return;
+    const parentIds: string[] = Array.isArray(row.parentId)
+      ? row.parentId
+      : row.parentId
+      ? [row.parentId]
+      : [];
 
-        elements.push({
-          data: { id: currentRow.shockId, label: currentRow.shockId },
-        });
-        addedNodes.add(currentRow.shockId);
+    const parentRows = parentIds
+      .map((pid) => rows.find((r) => r.shockId === pid))
+      .filter(Boolean) as IterationRow[];
 
-        const parentIds: string[] = Array.isArray(currentRow.parentId)
-          ? currentRow.parentId
-          : currentRow.parentId
-            ? [currentRow.parentId]
-            : [];
+    return (
+      <Accordion key={row.id} disableGutters>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Stack direction="row" spacing={2} sx={{ width: "100%" }}>
+            <Typography variant="body2">Row ID: {row.id}</Typography>
+            <Typography variant="body2">Source: {row.source}</Typography>
+            <Typography variant="body2">Destination: {row.destination}</Typography>
+            <Typography variant="body2">Value: {row.value}</Typography>
+            <Typography variant="body2">Type: {row.shockType}</Typography>
+          </Stack>
+        </AccordionSummary>
+        <AccordionDetails>
+          {parentRows.length > 0 ? (
+            parentRows.map((p) => renderAccordion(p))
+          ) : (
+            <Typography variant="body2" color="text.secondary">
+              No Parents
+            </Typography>
+          )}
+        </AccordionDetails>
+      </Accordion>
+    );
+  };
 
-        parentIds.forEach((parentId) => {
-          const parentRow = rows.find((r) => r.shockId === parentId);
-          if (!parentRow) return;
-
-          elements.push({
-            data: {
-              source: parentRow.shockId,
-              target: currentRow.shockId,
-              label: "parent",
-            },
-          });
-
-          addNodeAndParents(parentRow);
-        });
-      };
-
-      addNodeAndParents(row);
-
-      setGraphElements(elements);
-      setModalOpen(true);
-    },
-    [rows]
-  );
+  const handleViewHistory = (row: IterationRow) => {
+    setSelectedRow(row);
+    setModalOpen(true);
+  };
 
   const columns: GridColDef[] = [
     { field: "Iteration", headerName: "Iteration", flex: 0.75 },
@@ -124,9 +131,9 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
       headerName: "Shock Id",
       flex: 1.5,
       renderCell: (params) => (
-        <Stack direction="row" gap={1} alignItems="center">
+        <Stack direction="row" gap={1} alignItems="center" flexWrap="wrap">
           <Typography>{params.value}</Typography>
-          <Button variant="outlined">View Children</Button>
+          <Button size="small" variant="outlined">Children</Button>
         </Stack>
       ),
     },
@@ -135,9 +142,9 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
       headerName: "Parents Ids",
       flex: 1.5,
       renderCell: (params) => (
-        <Stack direction="row" gap={1} alignItems="center">
+        <Stack direction="row" gap={1} alignItems="center" flexWrap="wrap">
           <Typography>{params.value}</Typography>
-          <Button variant="outlined">View Parents</Button>
+          <Button variant="outlined" size="small">Parents</Button>
         </Stack>
       ),
     },
@@ -156,7 +163,7 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
         <Button
           variant="contained"
           size="small"
-          onClick={() => buildGraphElements(params.row)}
+          onClick={() => handleViewHistory(params.row)}
         >
           View History
         </Button>
@@ -188,26 +195,8 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
         text="View Node History"
         onClose={() => setModalOpen(false)}
       >
-        <Box sx={{ width: "600px", height: "400px" }}>
-          <CytoscapeComponent
-            elements={graphElements}
-            style={{ width: "100%", height: "100%" }}
-            layout={{ name: "breadthfirst" }}
-            stylesheet={[
-              {
-                selector: "node",
-                style: { label: "data(label)", "text-valign": "center" },
-              },
-              {
-                selector: "edge",
-                style: {
-                  label: "data(label)",
-                  "curve-style": "bezier",
-                  "target-arrow-shape": "triangle",
-                },
-              },
-            ]}
-          />
+        <Box sx={{ width: "600px", maxHeight: "400px", overflowY: "auto" }}>
+          {selectedRow && renderAccordion(selectedRow)}
         </Box>
       </InputModal>
     </Box>

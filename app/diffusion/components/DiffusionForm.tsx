@@ -7,6 +7,7 @@ import {
   CircularProgress,
   Stack,
   TextField,
+  InputAdornment,
   Typography,
 } from "@mui/material";
 import MemoryIcon from "@mui/icons-material/Memory";
@@ -50,7 +51,15 @@ const DiffusionForm: FC<IProps> = ({ integrations }) => {
     getValues,
     control,
     formState: { errors },
-  } = useForm<IFormData>({ defaultValues: { integration: "" } });
+  } = useForm<IFormData>({
+    defaultValues: {
+      integration: "",
+      number_of_iterations: 6,
+      threshold_one: 0.01,
+      threshold_two: 0.01,
+      threshold_three: 0.01,
+    },
+  });
 
   const handleAddShock = useCallback(
     (shock: Omit<Shock, "id">) =>
@@ -161,6 +170,11 @@ const DiffusionForm: FC<IProps> = ({ integrations }) => {
               label="Threshold 2"
               {...register("threshold_two", { required: true })}
               error={!!errors.threshold_two?.type}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">%</InputAdornment>
+                ),
+              }}
               helperText={
                 errors.threshold_two?.type === "required" &&
                 "Threshold 2 is required"
@@ -171,6 +185,11 @@ const DiffusionForm: FC<IProps> = ({ integrations }) => {
               label="Threshold 3"
               {...register("threshold_three", { required: true })}
               error={!!errors.threshold_three?.type}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">%</InputAdornment>
+                ),
+              }}
               helperText={
                 errors.threshold_three?.type === "required" &&
                 "Threshold 1 is required"
@@ -189,6 +208,6 @@ const DiffusionForm: FC<IProps> = ({ integrations }) => {
       </Stack>
     </Box>
   );
-}
+};
 
 export default DiffusionForm;

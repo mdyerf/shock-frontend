@@ -9,7 +9,7 @@ import StatusChip from "@/app/components/StatusChip";
 const columns: GridColDef[] = [
   {
     field: "name",
-    headerName: "Integration Name",
+    headerName: "Name",
     flex: 1.5,
     minWidth: 200,
     renderCell: (params) => (

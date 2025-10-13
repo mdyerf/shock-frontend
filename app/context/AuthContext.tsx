@@ -6,6 +6,7 @@ import { isAuthenticated, logout } from "../api/auth";
 
 interface AuthContextType {
   authenticated: boolean;
+  isLoading: boolean;
   setAuthenticated: (val: boolean) => void;
   logout: () => void;
 }
@@ -15,14 +16,16 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [authenticated, setAuthenticated] = useState(isAuthenticated());
+  const [authenticated, setAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setAuthenticated(isAuthenticated());
+    setIsLoading(false);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ authenticated, setAuthenticated, logout }}>
+    <AuthContext.Provider value={{ authenticated, isLoading, setAuthenticated, logout }}>
       {children}
     </AuthContext.Provider>
   );

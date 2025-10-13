@@ -9,19 +9,19 @@ export default function ProtectedRoute({
 }: {
   children: React.ReactNode;
 }) {
-  const { authenticated } = useAuth();
+  const { authenticated, isLoading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
     // if not authenticated, redirect to /login
-    if (!authenticated && pathname !== "/login") {
+    if (!isLoading && !authenticated && pathname !== "/login") {
       router.push("/login");
     }
-  }, [authenticated, pathname, router]);
+  }, [authenticated, isLoading, pathname, router]);
 
-  // while redirecting, don't render protected children
-  if (!authenticated && pathname !== "/login") {
+  // while loading or redirecting, don't render protected children
+  if (isLoading || (!authenticated && pathname !== "/login")) {
     return null;
   }
 

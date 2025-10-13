@@ -1,11 +1,26 @@
-import Link from "next/link";
-import { baseURL } from "@/app/api";
+import api from "@/app/api";
 import StatusChip from "@/app/components/StatusChip";
 import { IconButton, Stack, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
+
+async function downloadDiffusionFile(diffusionId: number) {
+  const response = await api.get(`/diffusions/download/${diffusionId}` as string, {
+    responseType: "blob",
+  });
+
+  const blob = new Blob([response.data]);
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `diffusion-${diffusionId}.zip`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(url);
+}
 
 export const getGridColumns = (
   onInfoClick: (id: number) => void,
@@ -49,11 +64,9 @@ export const getGridColumns = (
     headerName: "Actions",
     renderCell: (params) => (
       <Stack direction="row">
-        <Link href={`${baseURL}/diffusions/download/${params.id}`}>
-          <IconButton>
-            <DownloadIcon color="info" />
-          </IconButton>
-        </Link>
+        <IconButton onClick={() => downloadDiffusionFile(params.id as number)}>
+          <DownloadIcon color="info" />
+        </IconButton>
         <IconButton onClick={() => onDelete(params.id as number)}>
           <DeleteIcon color="error" />
         </IconButton>

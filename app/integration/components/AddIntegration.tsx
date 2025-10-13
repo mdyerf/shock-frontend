@@ -43,19 +43,19 @@ function AddIntegration({ integrations }: AddIntegrationProps) {
       <InputModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        text="Enter Integration Name"
+        text="New dataset"
         onSubmit={handleSubmit(handleAdd)}
       >
         <TextField
           variant="outlined"
-          label="Integration Name"
+          label="Name"
           {...register("name", { required: true })}
           error={!!errors.name?.type}
           helperText={errors.name?.type === "required" && "Name is required"}
         />
         <SelectInput
           {...register("parentId", { required: true })}
-          label="Parent Integration"
+          label="Parent"
           defaultValue=""
           items={integrations}
           error={!!errors.parentId?.type}
@@ -67,7 +67,7 @@ function AddIntegration({ integrations }: AddIntegrationProps) {
         startIcon={<Add />}
         onClick={handleOpenModal}
       >
-        Add Integration
+        Add Dataset
       </Button>
     </>
   );

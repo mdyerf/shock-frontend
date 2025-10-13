@@ -1,3 +1,4 @@
+"use client";
 // app/api/auth.ts
 import api from "./index";
 

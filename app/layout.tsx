@@ -1,6 +1,7 @@
 import * as React from "react";
 import { AppProvider } from "@toolpad/core";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
 import type { Navigation } from "@toolpad/core/AppProvider";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { DashboardLayout, PageContainer } from "@toolpad/core";
@@ -14,8 +15,14 @@ const NAVIGATION: Navigation = [
   {
     title: "Diffusion",
     segment: "diffusion",
-    pattern: "diffusion",
+    pattern: "diffusion{/:id}?",
     icon: <AccountTreeIcon />,
+  },
+  {
+    title: "Datasets",
+    segment: "integration",
+    pattern: "integration{/:id}?",
+    icon: <IntegrationInstructionsIcon />,
   },
 ];
 
