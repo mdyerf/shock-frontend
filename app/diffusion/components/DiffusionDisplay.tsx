@@ -14,14 +14,15 @@ import { FC, useEffect, useMemo, useRef, useState } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import GroupsModal from "./GroupsModal";
-import FiltersModal from "./FiltersModal";
 import cytoscape, { Core } from "cytoscape";
 import coseBilkent from "cytoscape-cose-bilkent";
 import dagre from "cytoscape-dagre";
 import klay from "cytoscape-klay";
 import NodesGrid from "./NodesGrid";
 import { IterationRow } from "@/app/types";
+import { useRouter } from "next/navigation";
+import api from "@/app/api";
+import { useMutation } from "@tanstack/react-query";
 
 cytoscape.use(dagre);
 cytoscape.use(klay);
@@ -84,15 +85,19 @@ interface IProps {
     edges: { source: string; target: string; weight: number }[];
   }[];
   table: IterationRow[];
+  id: string;
 }
 
-const DiffusionDisplay: FC<IProps> = ({ graphs, table }) => {
+const DiffusionDisplay: FC<IProps> = ({ graphs, table, id }) => {
   const cyRef = useRef<Core | null>(null);
+  const router = useRouter();
 
   const [iteration, setIteration] = useState(0);
-  const [showGroupsModal, setShowGroupsModal] = useState(false);
-  const [showFiltersModal, setShowFiltersModal] = useState(false);
   const [display, setDisplay] = useState<DisplayMode>("table");
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => api.post(`/datasets/from-diffusion/${id}/`),
+  });
 
   const elements = useMemo(
     () =>
@@ -116,87 +121,81 @@ const DiffusionDisplay: FC<IProps> = ({ graphs, table }) => {
     }
   }, [elements]);
 
+  const handleSaveAsDataset = () =>
+    mutate(undefined, { onSuccess: () => router.push("/integration") });
+
   return (
-    <>
-      <GroupsModal
-        open={showGroupsModal}
-        onClose={() => setShowGroupsModal(false)}
-      />
-      <FiltersModal
-        open={showFiltersModal}
-        onClose={() => setShowFiltersModal(false)}
-      />
-      <Stack width="100%" height="100%" gap={2}>
+    <Stack width="100%" height="100%" gap={2}>
+      <Stack
+        direction="row"
+        gap={2}
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Stack direction="row" gap={1}>
+          <Select
+            value={display}
+            label="Display"
+            onChange={(e) => setDisplay(e.target.value as DisplayMode)}
+          >
+            <MenuItem value="table">Table</MenuItem>
+            <MenuItem value="graph">Graph</MenuItem>
+          </Select>
+        </Stack>
+        <Typography>Diffusion</Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={isPending}
+          onClick={handleSaveAsDataset}
+        >
+          Save result as dataset
+        </Button>
+      </Stack>
+      {display === "graph" && (
         <Stack
           direction="row"
-          gap={2}
+          gap={1}
           alignItems="center"
           justifyContent="space-between"
         >
-          <Stack direction="row" gap={1}>
-            <Select
-              value={display}
-              label="Display"
-              onChange={(e) => setDisplay(e.target.value as DisplayMode)}
-            >
-              <MenuItem value="table">Table</MenuItem>
-              <MenuItem value="graph">Graph</MenuItem>
-            </Select>
-            <Button onClick={() => setShowGroupsModal(true)}>Groups</Button>
-            <Button onClick={() => setShowFiltersModal(true)}>Filters</Button>
-          </Stack>
-          <Typography>Diffusion Name</Typography>
-          <Button variant="contained" color="primary">
-            Refetch
-          </Button>
-        </Stack>
-        {display === "graph" && (
-          <Stack
-            direction="row"
-            gap={1}
-            alignItems="center"
-            justifyContent="space-between"
+          <IconButton onClick={() => setIteration((it) => Math.max(it - 1, 0))}>
+            <ChevronLeftIcon />
+          </IconButton>
+          <LinearProgress
+            variant="determinate"
+            value={((iteration + 1) * 100) / graphs.length}
+            sx={{ width: "100%" }}
+          />
+          <IconButton
+            onClick={() =>
+              setIteration((it) => Math.min(it + 1, graphs.length - 1))
+            }
           >
-            <IconButton
-              onClick={() => setIteration((it) => Math.max(it - 1, 0))}
-            >
-              <ChevronLeftIcon />
-            </IconButton>
-            <LinearProgress
-              variant="determinate"
-              value={((iteration + 1) * 100) / graphs.length}
-              sx={{ width: "100%" }}
-            />
-            <IconButton
-              onClick={() =>
-                setIteration((it) => Math.min(it + 1, graphs.length - 1))
-              }
-            >
-              <ChevronRightIcon />
-            </IconButton>
-          </Stack>
-        )}
+            <ChevronRightIcon />
+          </IconButton>
+        </Stack>
+      )}
 
-        <Box flex={1}>
-          {display === "graph" && (
-            <CytoscapeComponent
-              elements={elements}
-              style={{
-                width: "100%",
-                height: "100%",
-                border: "1px solid gray",
-              }}
-              layout={layoutOptions}
-              stylesheet={style}
-              cy={(cy) => {
-                cyRef.current = cy;
-              }}
-            />
-          )}
-          {display === "table" && <NodesGrid rows={table} />}
-        </Box>
-      </Stack>
-    </>
+      <Box flex={1}>
+        {display === "graph" && (
+          <CytoscapeComponent
+            elements={elements}
+            style={{
+              width: "100%",
+              height: "100%",
+              border: "1px solid gray",
+            }}
+            layout={layoutOptions}
+            stylesheet={style}
+            cy={(cy) => {
+              cyRef.current = cy;
+            }}
+          />
+        )}
+        {display === "table" && <NodesGrid rows={table} />}
+      </Box>
+    </Stack>
   );
 };
 export default DiffusionDisplay;

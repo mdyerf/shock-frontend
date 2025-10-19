@@ -48,5 +48,5 @@ export default function Page({ params }: IPageProps) {
       </div>
     );
 
-  return <DiffusionDisplay graphs={graphsData.graphs} table={tableData} />;
+  return <DiffusionDisplay graphs={graphsData.graphs} table={tableData} id={id} />;
 }

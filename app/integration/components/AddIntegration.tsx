@@ -1,28 +1,30 @@
 "use client";
 
 import { Add } from "@mui/icons-material";
-import { Button, MenuItem, TextField, Select } from "@mui/material";
+import { Button, TextField, CircularProgress } from "@mui/material";
 import InputModal from "../../components/Modal";
 import { useState } from "react";
 import { createIntegration } from "../../mocks/integrations";
 import { useRouter } from "next/navigation";
-import { IntegrationRow } from "../../types";
 import SelectInput from "@/app/components/SelectInput";
 import { SubmitHandler, useForm } from "react-hook-form";
-
-interface AddIntegrationProps {
-  integrations: IntegrationRow[];
-}
+import { useQuery } from "@tanstack/react-query";
+import { getDatasets } from "@/app/diffusion/services/iterations";
 
 interface IFormData {
   name: string;
   parentId: number;
 }
 
-function AddIntegration({ integrations }: AddIntegrationProps) {
+function AddIntegration() {
   const navigate = useRouter();
 
   const [modalOpen, setModalOpen] = useState(false);
+
+  const { data: integrations } = useQuery({
+    queryKey: ["datasets"],
+    queryFn: () => getDatasets(),
+  });
 
   const {
     register,
@@ -53,13 +55,17 @@ function AddIntegration({ integrations }: AddIntegrationProps) {
           error={!!errors.name?.type}
           helperText={errors.name?.type === "required" && "Name is required"}
         />
-        <SelectInput
-          {...register("parentId", { required: true })}
-          label="Parent"
-          defaultValue=""
-          items={integrations}
-          error={!!errors.parentId?.type}
-        />
+        {integrations ? (
+          <SelectInput
+            {...register("parentId", { required: true })}
+            label="Parent"
+            defaultValue=""
+            items={integrations}
+            error={!!errors.parentId?.type}
+          />
+        ) : (
+          <CircularProgress />
+        )}
       </InputModal>
       <Button
         variant="contained"

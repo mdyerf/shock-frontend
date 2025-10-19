@@ -4,51 +4,33 @@ import {
   Box,
   Button,
   Chip,
-  IconButton,
   LinearProgress,
   Stack,
   Typography,
 } from "@mui/material";
-import UndoIcon from "@mui/icons-material/Undo";
-import DownloadIcon from "@mui/icons-material/Download";
-import DeleteIcon from "@mui/icons-material/Delete";
 import MemoryIcon from "@mui/icons-material/Memory";
-import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import { Country, Integration as DataType, GroupHandler } from "../../types";
+import { Country, GroupHandler } from "../../types";
 import { useMemo, useState } from "react";
 import CountriesGrid from "./CountriesGrid";
 import InputModal from "../../components/Modal";
-
-type IntegrationProps = DataType;
+import { useQuery } from "@tanstack/react-query";
+import { getCountriesIndustries } from "@/app/diffusion/services/iterations";
 
 const allIndustriesGroupName = "all industries";
 
-function Integration({
-  id,
-  name,
-  parent,
-  enableUndo,
-  status,
-  industries,
-  countries,
-  children,
-}: IntegrationProps) {
+function Integration({ id }: { id: number }) {
   const [countryGroups, setGroups] = useState<Country[]>([]);
   const [groupIndustries, setGroupIndustries] = useState(false);
 
-  const industriesGrouped = useMemo(
-    () => industries.length === 1,
-    [industries.length]
-  );
+  const { data } = useQuery({
+    queryKey: ["dataset", id],
+    queryFn: () => getCountriesIndustries(id),
+  });
 
-  const groups = useMemo(
-    () =>
-      countries
-        .filter((c) => c.countries?.length)
-        .map((c) => c.name)
-        .concat(industriesGrouped ? [allIndustriesGroupName] : []),
-    [industriesGrouped, countries]
+  const { countries, industries } = useMemo(
+    () => data ?? { countries: [], industries: [] },
+    [data]
   );
 
   const processDisabled = useMemo(
@@ -60,7 +42,7 @@ function Integration({
 
   const handleUnGroupIndustries = () => setGroupIndustries(false);
 
-  const handleCountryGroup: GroupHandler = (id ,name, countries) =>
+  const handleCountryGroup: GroupHandler = (id, name, countries) =>
     setGroups((gs) => [...gs, { id, name, countries }]);
 
   const handleRemoveGroup = (name: string) => () =>
@@ -83,20 +65,6 @@ function Integration({
           mb={2}
           gap={1}
         >
-          <Typography variant="h4">{name}</Typography>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Typography variant="body1">Parent:</Typography>
-            <Typography variant="body1" color="secondary">
-              {parent.name}
-            </Typography>
-            <Button
-              variant="contained"
-              color="warning"
-              startIcon={<SettingsBackupRestoreIcon />}
-            >
-              Reset
-            </Button>
-          </Stack>
           <Stack direction="row" spacing={1}>
             <Button
               variant="contained"
@@ -106,15 +74,6 @@ function Integration({
             >
               Start Processing
             </Button>
-            <IconButton disabled={!enableUndo}>
-              <UndoIcon color={enableUndo ? "secondary" : "disabled"} />
-            </IconButton>
-            <IconButton>
-              <DownloadIcon color="info" />
-            </IconButton>
-            <IconButton>
-              <DeleteIcon color="error" />
-            </IconButton>
           </Stack>
         </Stack>
 
@@ -126,17 +85,6 @@ function Integration({
         >
           <Stack width={200}>
             <Typography variant="body1">Groups</Typography>
-            <Box
-              display="flex"
-              flexDirection="row"
-              flexWrap="wrap"
-              gap={1}
-              m={1}
-            >
-              {groups.map((g) => (
-                <Chip key={g} label={g} color="default" />
-              ))}
-            </Box>
             <Box
               display="flex"
               flexDirection="row"
@@ -160,7 +108,7 @@ function Integration({
                 />
               )}
             </Box>
-            {!industriesGrouped && !groupIndustries && (
+            {!groupIndustries && (
               <Box m={1}>
                 <Chip
                   label="Group All Industries"

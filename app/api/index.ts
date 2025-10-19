@@ -101,6 +101,14 @@ api.interceptors.response.use(
       } catch (err) {
         failedQueue.forEach((p) => p.reject(err));
         failedQueue = [];
+
+        // Logout user and navigate to login on refresh failure
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }
+
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

@@ -21,7 +21,7 @@ export const getDiffusionTable = (
     .get(`/diffusions/${id}/iterations/?sort_by=${sortBy}&sort_order=${order}`)
     .then((res) => res.data);
 
-export const getCountriesIndustries = async (integration: string) =>
+export const getCountriesIndustries = async (integration: string | number) =>
   api.get(`/datasets/meta/${integration}`).then((res) => res.data) as Promise<{
     countries: string[];
     industries: string[];

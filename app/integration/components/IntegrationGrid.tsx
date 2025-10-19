@@ -5,6 +5,8 @@ import { GridColDef } from "@mui/x-data-grid";
 import DataGrid from "@/app/components/DataGrid";
 import { IntegrationRow } from "../../types";
 import StatusChip from "@/app/components/StatusChip";
+import { useQuery } from "@tanstack/react-query";
+import { getDatasets } from "@/app/diffusion/services/iterations";
 
 const columns: GridColDef[] = [
   {
@@ -16,31 +18,14 @@ const columns: GridColDef[] = [
       <Link href={`/integration/${params.id}`}>{params.value}</Link>
     ),
   },
-  {
-    field: "status",
-    headerName: "Execution",
-    flex: 1,
-    minWidth: 80,
-    renderCell: (params) => <StatusChip status={params.value} />,
-  },
-  {
-    field: "parentName",
-    headerName: "Parent",
-    flex: 1,
-  },
-  {
-    field: "childrenCount",
-    headerName: "Children Count",
-    flex: 1,
-  },
 ];
 
-interface IntegrationGridProps {
-  rows: IntegrationRow[];
-}
-
-function IntegrationGrid({ rows }: IntegrationGridProps) {
-  return <DataGrid rows={rows} columns={columns} />;
+function IntegrationGrid() {
+  const { data: rows } = useQuery({
+    queryKey: ["datasets"],
+    queryFn: () => getDatasets(),
+  });
+  return <DataGrid rows={rows ?? []} columns={columns} />;
 }
 
 export default IntegrationGrid;

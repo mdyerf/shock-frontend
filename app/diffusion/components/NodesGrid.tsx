@@ -106,6 +106,7 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
           </Stack>
         </AccordionSummary>
         <AccordionDetails>
+          <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1 }}>Parents:</Typography>
           {parentRows.length > 0 ? (
             parentRows.map((p) => renderAccordion(p))
           ) : (
@@ -129,9 +130,9 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
     {
       field: "shockId",
       headerName: "Shock Id",
-      flex: 1.5,
+      flex: 1.25,
       renderCell: (params) => (
-        <Stack direction="row" gap={1} alignItems="center" flexWrap="wrap">
+        <Stack direction="row" gap={1} alignItems="center" flexWrap="nowrap">
           <Typography>{params.value}</Typography>
           <Button size="small" variant="outlined">Children</Button>
         </Stack>
@@ -140,9 +141,9 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
     {
       field: "parentId",
       headerName: "Parents Ids",
-      flex: 1.5,
+      flex: 1.25,
       renderCell: (params) => (
-        <Stack direction="row" gap={1} alignItems="center" flexWrap="wrap">
+        <Stack direction="row" gap={1} alignItems="center" flexWrap="nowrap">
           <Typography>{params.value}</Typography>
           <Button variant="outlined" size="small">Parents</Button>
         </Stack>
@@ -150,8 +151,8 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
     },
     { field: "source", headerName: "Source", flex: 1 },
     { field: "destination", headerName: "Destination", flex: 1 },
-    { field: "shockType", headerName: "Shock Type", flex: 0.75 },
-    { field: "value", headerName: "Shock Value", flex: 0.75 },
+    { field: "shockType", headerName: "Type", flex: 0.75 },
+    { field: "value", headerName: "Value", flex: 0.75 },
     { field: "comment", headerName: "Comment", flex: 1 },
     {
       field: "actions",
@@ -165,7 +166,7 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
           size="small"
           onClick={() => handleViewHistory(params.row)}
         >
-          View History
+          History
         </Button>
       ),
     },
@@ -179,8 +180,9 @@ const NodesGrid: FC<IProps> = ({ rows }) => {
         </Button>
       </Stack>
 
-      <Box height={450}>
+      <Box height={450} sx={{ overflowX: 'auto' }}>
         <DataGrid
+          style={{ minWidth: "1000px" }}
           apiRef={apiRef}
           rows={rows}
           columns={columns}

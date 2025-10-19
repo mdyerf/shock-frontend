@@ -11,29 +11,17 @@ const columns: GridColDef[] = [
     headerName: "Country/Group Name",
     flex: 1,
   },
-  {
-    field: "countries",
-    headerName: "Grouped Countries",
-    flex: 1,
-    renderCell(params) {
-      return (
-        <Typography variant="body1">
-          {(params.value as string[] | undefined)?.join(", ")}
-        </Typography>
-      );
-    },
-  },
 ];
 
 interface CountriesGridProps {
-  rows: Integration["countries"];
+  rows: string[];
   onGroup: GroupHandler;
 }
 
 function CountriesGrid({ rows, onGroup }: CountriesGridProps) {
   return (
     <DataGrid
-      rows={rows.map((row, index) => ({ ...row, id: index }))}
+      rows={rows.map((row, index) => ({ name: row, id: index }))}
       columns={columns}
       checkboxSelection
       onGroup={onGroup}

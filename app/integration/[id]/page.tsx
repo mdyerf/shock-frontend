@@ -7,8 +7,5 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
-
-  const integration = await getIntegration(id);
-
-  return <Integration {...integration} />;
+  return <Integration id={id} />;
 }

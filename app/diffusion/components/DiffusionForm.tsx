@@ -19,7 +19,8 @@ import SelectInput from "@/app/components/SelectInput";
 import api from "@/app/api";
 import { getShocksObject } from "../utils/converter";
 import { useRouter } from "next/navigation";
-import { getCountriesIndustries } from "../services/iterations";
+import { getCountriesIndustries, getDatasets } from "../services/iterations";
+import { useQuery } from "@tanstack/react-query";
 
 type IFormData = {
   name: string;
@@ -30,11 +31,7 @@ type IFormData = {
   threshold_three: number;
 };
 
-interface IProps {
-  integrations: { id: string; name: string }[];
-}
-
-const DiffusionForm: FC<IProps> = ({ integrations }) => {
+const DiffusionForm = () => {
   const router = useRouter();
 
   const [shocks, setShocks] = useState<Shock[]>([]);
@@ -44,6 +41,11 @@ const DiffusionForm: FC<IProps> = ({ integrations }) => {
   const [industries, setIndustries] = useState<string[]>([]);
 
   const processDisabled = useMemo(() => !shocks.length, [shocks]);
+
+  const { data: integrations } = useQuery({
+    queryKey: ['datasets'],
+    queryFn: () => getDatasets(),
+  })
 
   const {
     register,
@@ -106,23 +108,28 @@ const DiffusionForm: FC<IProps> = ({ integrations }) => {
         />
         <Stack direction="row" spacing={1} alignItems="center">
           <Typography variant="body1">Base Integration:</Typography>
-          <Controller
-            control={control}
-            name="integration"
-            rules={{ required: true }}
-            render={({ field }) => (
-              <SelectInput
-                {...field}
-                label="Base Integration"
-                items={integrations}
-                error={!!errors.integration?.type}
-                onChange={(e) => {
-                  field.onChange(e);
-                  handleIntegrationChange(e.target.value as string);
-                }}
-              />
-            )}
-          />
+          {integrations ? (
+
+            <Controller
+              control={control}
+              name="integration"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <SelectInput
+                  {...field}
+                  label="Base Integration"
+                  items={integrations}
+                  error={!!errors.integration?.type}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleIntegrationChange(e.target.value as string);
+                  }}
+                />
+              )}
+            />
+          ) : (
+            <CircularProgress size={24} />
+          )}
         </Stack>
         <Button
           variant="contained"
