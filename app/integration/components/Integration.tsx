@@ -14,14 +14,18 @@ import { Country, GroupHandler } from "../../types";
 import { useMemo, useState } from "react";
 import CountriesGrid from "./CountriesGrid";
 import InputModal from "../../components/Modal";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCountriesIndustries } from "@/app/diffusion/services/iterations";
+import api from "@/app/api";
+import { useRouter } from "next/navigation";
 
 const allIndustriesGroupName = "all industries";
 
 function Integration({ id }: { id: number }) {
   const [countryGroups, setGroups] = useState<Country[]>([]);
   const [groupIndustries, setGroupIndustries] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const router = useRouter();
 
   const { data } = useQuery({
     queryKey: ["dataset", id],
@@ -42,17 +46,41 @@ function Integration({ id }: { id: number }) {
 
   const handleUnGroupIndustries = () => setGroupIndustries(false);
 
-  const handleCountryGroup: GroupHandler = (id, name, countries) =>
-    setGroups((gs) => [...gs, { id, name, countries }]);
+  const handleCountryGroup: GroupHandler = (name, countries) =>
+    setGroups((gs) => [...gs, { name, countries }]);
 
   const handleRemoveGroup = (name: string) => () =>
     setGroups((gs) => gs.filter((g) => g.name !== name));
 
+  const startProcessingMutation = useMutation({
+    mutationFn: async () => {
+      const payload = {
+        dataset_id: id,
+        country_groups: countryGroups.map(group => ({
+          name: group.name,
+          members: group.countries
+        })),
+        group_all_industries: groupIndustries
+      };
+      return api.post('/datasets/group/', payload);
+    },
+    onMutate: () => {
+      setIsProcessing(true);
+    },
+    onSuccess: (response) => {
+      const newDatasetId = response.data.id;
+      router.push(`/integration/${newDatasetId}`);
+    },
+    onSettled: () => {
+      setIsProcessing(false);
+    },
+  });
+
   return (
     <>
       <InputModal
-        open={status === "running"}
-        text="This Integration is Running"
+        open={isProcessing}
+        text="Processing Integration"
       >
         <Typography variant="h5">Please Wait...</Typography>
         <LinearProgress />
@@ -69,8 +97,9 @@ function Integration({ id }: { id: number }) {
             <Button
               variant="contained"
               color={processDisabled ? "inherit" : "primary"}
-              disabled={processDisabled}
+              disabled={processDisabled || isProcessing}
               startIcon={<MemoryIcon />}
+              onClick={() => startProcessingMutation.mutate()}
             >
               Start Processing
             </Button>

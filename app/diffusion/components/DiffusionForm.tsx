@@ -168,8 +168,8 @@ const DiffusionForm = () => {
               {...register("threshold_one", { required: true })}
               error={!!errors.threshold_one?.type}
               helperText={
-                errors.threshold_one?.type === "required" &&
-                "Threshold 1 is required"
+                errors.threshold_one?.type === "required" ?
+                "Threshold 1 is required" : "Ignore shock threshold"
               }
             />
             <TextField
@@ -183,8 +183,8 @@ const DiffusionForm = () => {
                 ),
               }}
               helperText={
-                errors.threshold_two?.type === "required" &&
-                "Threshold 2 is required"
+                errors.threshold_two?.type === "required" ?
+                "Threshold 2 is required" : "Importance of category to other categories"
               }
             />
             <TextField
@@ -198,8 +198,8 @@ const DiffusionForm = () => {
                 ),
               }}
               helperText={
-                errors.threshold_three?.type === "required" &&
-                "Threshold 1 is required"
+                errors.threshold_three?.type === "required" ?
+                "Threshold 1 is required" : "Importance of industry in own category"
               }
             />
           </Stack>

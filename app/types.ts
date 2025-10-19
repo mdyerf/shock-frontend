@@ -7,7 +7,7 @@ export type IntegrationRow = {
   childrenCount: number;
 };
 
-export type Country = { id: string; name: string; countries?: string[] };
+export type Country = { name: string; countries?: string[] };
 
 export type Integration = {
   id: number;
@@ -19,7 +19,7 @@ export type Integration = {
   children: { id: number; name: string }[];
 };
 
-export type GroupHandler = (id: string, name: string, rows: string[]) => void;
+export type GroupHandler = (name: string, rows: string[]) => void;
 
 export type DiffusionRow = {
   id: number;

@@ -8,7 +8,6 @@ import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import InputModal from "./Modal";
 
 interface IFormInput {
-  id: string;
   name: string;
 }
 
@@ -27,8 +26,8 @@ function Footer(onGroup?: Function) {
     const getRows = () =>
       Array.from(apiRef.current.getSelectedRows().values()).map((r) => r.name);
 
-    const handleCreateGroup: SubmitHandler<IFormInput> = ({ id, name }) => {
-      onGroup?.(id, name, getRows());
+    const handleCreateGroup: SubmitHandler<IFormInput> = ({ name }) => {
+      onGroup?.(name, getRows());
       apiRef.current.setRowSelectionModel([]);
     };
 
@@ -42,15 +41,6 @@ function Footer(onGroup?: Function) {
           onSubmit={handleSubmit(handleCreateGroup)}
           text="Enter Group Name"
         >
-          <TextField
-            variant="outlined"
-            label="Group Symbol"
-            {...register("id", { required: true })}
-            error={!!errors.id?.type}
-            helperText={
-              errors.id?.type === "required" && "Group Symbol is required"
-            }
-          />
           <TextField
             variant="outlined"
             label="Group Name"
@@ -71,7 +61,7 @@ function Footer(onGroup?: Function) {
           <GridFooter />
           {getRows().length > 1 && (
             <Chip
-              label="Group SelectedCountries"
+              label="Group selected countries"
               color="primary"
               size="medium"
               icon={<ControlPointIcon />}
